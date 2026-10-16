@@ -1,0 +1,7 @@
+[ORGANIZATION_001]
+[PERSON_001]
+DOB: [DATE_OF_BIRTH_001]
+S/O [PERSON_002]
+Female
+[GOVERNMENT_ID_001]
+Aadhaar - proof of identity

@@ -1,0 +1,21 @@
+# Opt-in HTTPS access to the review page from other devices on the same network:
+#   $env:LAN_IP = "192.168.1.9"   # this laptop's Wi-Fi address
+#   docker compose -f compose.yaml -f compose.ui.yaml -f compose.lan.yaml up -d
+# Then open https://<LAN_IP>:8443/review on the other device. Create the certificate first with
+# scripts/make_lan_cert.py (see README). The port binds to LAN_IP only, never 0.0.0.0, and the
+# relay terminates TLS so documents, original values, and the API key are encrypted on the network.
+# Anyone holding PRIVACY_API_KEY has full access; there are no per-user accounts.
+services:
+  lan-relay:
+    image: local-privacy-gateway:dev
+    command: ["python", "scripts/ui_relay.py", "--listen", "0.0.0.0:8443", "--target", "gateway:8000",
+              "--tls-cert", "/tls/cert.pem", "--tls-key", "/tls/key.pem"]
+    ports: ["${LAN_IP:?set LAN_IP to this laptop's Wi-Fi address}:8443:8443"]
+    volumes: ["./.runtime/lan-tls:/tls:ro"]
+    networks: [private, ingress]
+    depends_on: [gateway]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+networks:
+  ingress: {}

@@ -1,0 +1,18 @@
+# Opt-in only. Run the same mandatory approval callback on a private network.
+# Set PRIVACY_EXTERNAL_ENABLED=true, PRIVACY_DETECTOR=gliner,
+# PRIVACY_PROXY_MODEL=privacy-claude in gateway and proxy, and ANTHROPIC_MODEL.
+model_list:
+  - model_name: privacy-claude
+    litellm_params:
+      model: os.environ/ANTHROPIC_MODEL
+      api_key: os.environ/ANTHROPIC_API_KEY
+litellm_settings:
+  callbacks: [privacy_gateway.proxy_hook.approval_hook]
+  cache: false
+  set_verbose: false
+  turn_off_message_logging: true
+general_settings:
+  master_key: os.environ/PRIVACY_PROXY_KEY
+  disable_spend_logs: true
+  disable_error_logs: true
+

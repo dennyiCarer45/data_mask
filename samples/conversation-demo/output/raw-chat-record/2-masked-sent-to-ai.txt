@@ -1,0 +1,12 @@
+ticket: CS-20431
+channel: phone
+summary: The customer, [PERSON_001], called because a refund had not reached his account. He said he had cancelled his [ORGANIZATION_001] contract in August and was promised a refund of [AMOUNT_001]. [PERSON_002] read out his bank account [BANK_ACCOUNT_001] and asked us to confirm it was the one on file. He also gave a new mobile number, [PHONE_001], and asked that we stop using his old email [EMAIL_001]. During the call [PERSON_003] mentioned he had moved to [ADDRESS_001]. His partner, [PERSON_004], is authorised to speak on the account. [PERSON_002] was polite but frustrated, and asked for a supervisor callback within two working days.
+turns[0].speaker: agent
+turns[0].text: Thanks for calling, how can I help today?
+turns[1].speaker: customer
+turns[1].text: Hi, this is [PERSON_002]. I am still waiting for my refund from August.
+turns[2].speaker: agent
+turns[2].text: I am sorry about that. Let me check the account.
+turns[3].speaker: customer
+turns[3].text: [PERSON_005] already called last week and was told it was processed.
+resolution: escalated

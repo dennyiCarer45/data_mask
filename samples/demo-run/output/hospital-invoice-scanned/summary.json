@@ -1,0 +1,28 @@
+{
+  "input": "hospital-invoice-scanned.pdf",
+  "category": "invoices",
+  "masked_values": 25,
+  "by_type": {
+    "ADDRESS": 2,
+    "AMOUNT": 13,
+    "DATE_OF_BIRTH": 1,
+    "DIAGNOSIS": 1,
+    "EMAIL": 2,
+    "MRN": 3,
+    "ORGANIZATION": 1,
+    "PERSON": 1,
+    "PHONE": 1
+  },
+  "blocked_types": [],
+  "sendable": true,
+  "still_detected_after_masking": 0,
+  "ocr": {
+    "engine": "tesseract 5.5.0",
+    "languages": "eng+hin",
+    "words": 209,
+    "unverified_words": 1,
+    "min_confidence": 60.0
+  },
+  "unlocated_in_masked_copy": 0,
+  "ai_call": 200
+}

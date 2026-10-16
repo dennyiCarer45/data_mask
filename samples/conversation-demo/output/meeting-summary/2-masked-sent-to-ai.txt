@@ -1,0 +1,14 @@
+Meeting summary - partner review
+
+Attendees: our account team and two representatives from [ORGANIZATION_001].
+
+[PERSON_001] opened by saying [ORGANIZATION_001] was happy with delivery times but wanted
+clearer reporting. His colleague, [PERSON_002], explained that their finance lead had queried three
+invoices from the last quarter, the largest being [AMOUNT_001]. [PERSON_003] asked whether [PROJECT_001] could include a shared dashboard so both sides could see shipment status.
+
+[PERSON_004] said she could be contacted directly at [EMAIL_001] or on [PHONE_001], and that invoices should now go to their new office at [ADDRESS_001].
+She also noted that [PERSON_003] would be on leave for most of December, so she would approve any
+changes in his absence.
+
+Action items: our team to send a draft dashboard to [PERSON_004]; [PERSON_003] to confirm the reporting fields
+before he leaves; both sides to meet again in January.

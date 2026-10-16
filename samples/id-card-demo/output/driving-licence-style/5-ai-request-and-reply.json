@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "[ORGANIZATION_001] - DRIVING LICENCE\nTransport Department, Karnataka (SPECIMEN)\nDL No: [GOVERNMENT_ID_001]\nName: [PERSON_001]\nS/O: [PERSON_002]\nDOB: [DATE_OF_BIRTH_001]\nBlood Group: [DIAGNOSIS_001]\nAddress: [ADDRESS_001],\n[ADDRESS_002]\nValid Till: 01/02/2039\nClass of vehicle: LMV, MCWG\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 8,
+  "category": "general",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "[ORGANIZATION_001] - DRIVING LICENCE\nTransport Department, Karnataka (SPECIMEN)\nDL No: [GOVERNMENT_ID_001]\nName: [PERSON_001]\nS/O: [PERSON_002]\nDOB: [DATE_OF_BIRTH_001]\nBlood Group: [DIAGNOSIS_001]\nAddress: [ADDRESS_001],\n[ADDRESS_002]\nValid Till: 01/02/2039\nClass of vehicle: LMV, MCWG"
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}

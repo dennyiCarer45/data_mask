@@ -1,0 +1,5 @@
+Patient: Mira Vale
+MRN: MRN-45821
+Phone: +91 98765 43210
+Diagnosis: Type 2 diabetes
+Email mira.vale@example.test with the follow-up plan.

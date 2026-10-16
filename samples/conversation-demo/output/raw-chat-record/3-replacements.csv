@@ -1,0 +1,14 @@
+original,placeholder,type,action,found_by,confidence
+Daniel Okafor,[PERSON_001],PERSON,mask,gliner reference,0.958
+Northwind Telecom,[ORGANIZATION_001],ORGANIZATION,mask,gliner reference,0.619
+$312.40,[AMOUNT_001],AMOUNT,mask,reference regex,0.95
+Daniel,[PERSON_002],PERSON,mask,reference,0.944
+GB82 WEST 1234 5698 7654 32,[BANK_ACCOUNT_001],BANK_ACCOUNT,mask,gliner reference regex,0.95
++44 7700 900123,[PHONE_001],PHONE,mask,reference regex,0.95
+daniel.o@example.test,[EMAIL_001],EMAIL,mask,gliner reference regex,0.95
+Mr. Okafor,[PERSON_003],PERSON,mask,gliner reference,0.93
+"7 Ferry Road, Leith, Edinburgh EH6 4AE",[ADDRESS_001],ADDRESS,mask,gliner reference,0.812
+Grace Bello,[PERSON_004],PERSON,mask,gliner reference,0.939
+Daniel,[PERSON_002],PERSON,mask,gliner reference,0.944
+Daniel,[PERSON_002],PERSON,mask,gliner reference,0.944
+Grace,[PERSON_005],PERSON,mask,gliner reference,0.915

@@ -1,0 +1,33 @@
+SAMPLE / NOT VALID FOR PAYMENT | All names, identifiers and addresses are fictional
+[ORGANIZATION_001]
+[ADDRESS_001]
+[EMAIL_001] | [PHONE_001]
+PATIENT INVOICE
+SAMPLE | FICTIONAL DATA
+Invoice no. INV-2026-1042 Invoice date 15 Oct 2026
+Patient name [PERSON_001] Patient ID [MRN_001]
+Date of birth [DATE_OF_BIRTH_001] Visit date 14 Oct 2026
+Department General Medicine Payment status PARTIALLY PAID
+BILLING DETAILS
+Billing address: [ADDRESS_002]
+Patient email: [EMAIL_002] Insurance ID: [MRN_002]
+Visit note: [DIAGNOSIS_001] follow-up (fictional clinical detail for privacy testing)
+ITEMIZED CHARGES
+Description Qty Amount (INR)
+General physician consultation [AMOUNT_001]
+Complete blood count (CBC) 1 [AMOUNT_002]
+Lipid profile 1 [AMOUNT_003]
+Electrocardiogram (ECG) 1 [AMOUNT_004]
+Prescribed medicines 1 [AMOUNT_005]
+Observation room charge 1 [AMOUNT_006]
+Nursing and monitoring [AMOUNT_007]
+Subtotal [AMOUNT_008]
+Discount [AMOUNT_009]
+Tax (illustrative) [AMOUNT_010]
+TOTAL AMOUNT [AMOUNT_011]
+Advance paid / BALANCE DUE [AMOUNT_012] / [AMOUNT_013]
+PAYMENT INFORMATION
+Payment method: UPI | Transaction reference: [MRN_003] | Balance due date: 22 Oct 2026
+This document is entirely synthetic and intended only for testing document extraction, sensitive-entity
+detection, masking, and policy enforcement. It is not a real medical invoice or proof of
+treatment/payment.

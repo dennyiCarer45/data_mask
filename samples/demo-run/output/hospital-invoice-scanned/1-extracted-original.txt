@@ -1,0 +1,34 @@
+SAMPLE / NOT VALID FOR PAYMENT | All names, identifiers and addresses are fictional
+NORTHSTAR COMMUNITY
+HOSPITAL
+42 Demo Avenue, Sample District, New Delhi - 110000
+billing@northstar.example | +91 90000 00000
+PATIENT INVOICE
+SAMPLE | FICTIONAL DATA
+Invoice no. INV-2026-1042 Invoice date 15 Oct 2026
+Patient name Mira Vale Patient ID MRN-45821
+Date of birth 14 Apr 1993 Visit date 14 Oct 2026
+Department General Medicine Payment status PARTIALLY PAID
+BILLING DETAILS
+Billing address: 42 Demo Street, Sample City, New Delhi - 110000
+Patient email: mira.vale@example.com Insurance ID: POL-DEMO-729418
+Visit note: Type 2 diabetes follow-up (fictional clinical detail for privacy testing)
+ITEMIZED CHARGES
+Description Qty Amount (INR)
+General physician consultation 1 800.00
+Complete blood count (CBC) 1 450.00
+Lipid profile 1 950.00
+Electrocardiogram (ECG) 1 600.00
+Prescribed medicines 1 1,200.00
+Observation room charge 1 2,500.00
+Nursing and monitoring 1 650.00
+Subtotal INR 7,150.00
+Discount INR 350.00
+Tax (illustrative) INR 0.00
+TOTAL AMOUNT INR 6,800.00
+Advance paid / BALANCE DUE INR 2,000.00 / INR 4,800.00
+PAYMENT INFORMATION
+Payment method: UPI | Transaction reference: UPI-DEMO-084215 | Balance due date: 22 Oct 2026
+This document is entirely synthetic and intended only for testing document extraction, sensitive-entity
+detection, masking, and policy enforcement. It is not a real medical invoice or proof of
+treatment/payment.

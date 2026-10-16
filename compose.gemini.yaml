@@ -1,0 +1,19 @@
+# Opt-in Google Gemini routing (free-tier key from Google AI Studio). Synthetic data only:
+#   docker compose -f compose.yaml -f compose.gemini.yaml up -d
+# Only the proxy joins the egress network and reads .env.gemini (GEMINI_API_KEY=...).
+# The gateway, which holds original text and request-local mappings, stays on the internal network.
+services:
+  gateway:
+    environment:
+      PRIVACY_EXTERNAL_ENABLED: "true"
+      PRIVACY_PROXY_MODEL: privacy-gemini
+  proxy:
+    command: ["python", "-c", "from litellm import run_server; run_server()", "--config", "/app/config/litellm.gemini.yaml", "--host", "0.0.0.0", "--port", "4000"]
+    env_file: .env.gemini
+    environment:
+      PRIVACY_PROXY_MODEL: privacy-gemini
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini/gemini-3.5-flash-lite}
+    volumes: ["./config/litellm.gemini.example.yaml:/app/config/litellm.gemini.yaml:ro"]
+    networks: [private, egress]
+networks:
+  egress: {}

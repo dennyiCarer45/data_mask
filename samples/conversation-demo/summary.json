@@ -1,0 +1,63 @@
+[
+  {
+    "input": "raw-call-summary.txt",
+    "category": "healthcare",
+    "masked_values": 25,
+    "by_type": {
+      "ADDRESS": 2,
+      "AMOUNT": 1,
+      "DIAGNOSIS": 2,
+      "EMAIL": 1,
+      "MRN": 1,
+      "ORGANIZATION": 3,
+      "PERSON": 14,
+      "PHONE": 1
+    },
+    "blocked_types": [],
+    "sendable": true,
+    "still_detected_after_masking": 0,
+    "ocr": null,
+    "unlocated_in_masked_copy": null,
+    "ai_call": 200
+  },
+  {
+    "input": "raw-chat-record.json",
+    "category": "general",
+    "masked_values": 13,
+    "by_type": {
+      "ADDRESS": 1,
+      "AMOUNT": 1,
+      "BANK_ACCOUNT": 1,
+      "EMAIL": 1,
+      "ORGANIZATION": 1,
+      "PERSON": 7,
+      "PHONE": 1
+    },
+    "blocked_types": [],
+    "sendable": true,
+    "still_detected_after_masking": 0,
+    "ocr": null,
+    "unlocated_in_masked_copy": null,
+    "ai_call": 200
+  },
+  {
+    "input": "meeting-summary.pdf",
+    "category": "general",
+    "masked_values": 14,
+    "by_type": {
+      "ADDRESS": 1,
+      "AMOUNT": 1,
+      "EMAIL": 1,
+      "ORGANIZATION": 2,
+      "PERSON": 7,
+      "PHONE": 1,
+      "PROJECT": 1
+    },
+    "blocked_types": [],
+    "sendable": true,
+    "still_detected_after_masking": 0,
+    "ocr": null,
+    "unlocated_in_masked_copy": 0,
+    "ai_call": 200
+  }
+]

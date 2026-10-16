@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "Patient: [PERSON_001]\nMRN: [MRN_001]\nPhone: [PHONE_001]\nDiagnosis: [HEALTH_CONDITION]\nEmail [EMAIL_001] with the follow-up plan.\n\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 5,
+  "category": "healthcare",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "Patient: [PERSON_001]\nMRN: [MRN_001]\nPhone: [PHONE_001]\nDiagnosis: [HEALTH_CONDITION]\nEmail [EMAIL_001] with the follow-up plan.\n"
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}

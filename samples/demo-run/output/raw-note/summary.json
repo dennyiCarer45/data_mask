@@ -1,0 +1,18 @@
+{
+  "input": "raw-note.txt",
+  "category": "healthcare",
+  "masked_values": 5,
+  "by_type": {
+    "DIAGNOSIS": 1,
+    "EMAIL": 1,
+    "MRN": 1,
+    "PERSON": 1,
+    "PHONE": 1
+  },
+  "blocked_types": [],
+  "sendable": true,
+  "still_detected_after_masking": 0,
+  "ocr": null,
+  "unlocated_in_masked_copy": null,
+  "ai_call": 200
+}

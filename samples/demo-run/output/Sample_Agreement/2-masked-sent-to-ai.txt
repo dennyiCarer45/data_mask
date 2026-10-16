@@ -1,0 +1,75 @@
+SERVICE & CONFIDENTIALITY AGREEMENT
+
+Agreement No. AGR-DEMO-2026-041 | Effective: 15 October 2026
+
+SYNTHETIC SAMPLE — NOT A REAL RECORD
+
+
+1. Parties
+This Service & Confidentiality Agreement ("Agreement") is entered into between [ORGANIZATION_001] ("Client"), [ADDRESS_001], and
+[ORGANIZATION_002] ("Provider"), [ADDRESS_002]. All entities and
+details are fictional.
+
+ Client contact                               [PERSON_001], Operations Lead
+
+ Provider contact                             [PERSON_002], Delivery Manager
+
+ Client email                                 [EMAIL_001]
+
+ Provider email                              [EMAIL_002]
+
+ Reference number                           NCS/PROC/2026/041
+
+
+2. [ORGANIZATION_003] will design and test a document-processing prototype that receives invoice, agreement, and
+healthcare-guideline text, identifies sensitive content, and returns policy-approved masked output.
+Deliverables include an API demonstration, test cases, and a deployment guide.
+
+
+3. Commercial Terms
+ Project fee                              [AMOUNT_001] (illustrative)
+
+ [AMOUNT_002]                           [AMOUNT_003] payable within 10 days of signing
+
+ Final milestone                            [AMOUNT_004] payable following acceptance
+
+ Payment reference                         DEMO-ACCT-7421 (fictitious; not a real banking
+                                                     instruction)
+
+
+4. Confidentiality & Data Protection
+Each party must protect non-public operational data, patient-related information, pricing, contract
+terms, and credentials. The Provider must not transmit Client source documents or direct identifiers
+to external AI services without the Client’s explicit written authorization. Test files will use synthetic
+data unless separately approved.
+
+
+
+
+[INTERNAL_INFORMATION_001] • fictitious identities and organizations • privacy testing only
+5. Restricted Information — Illustrative
+Internal project codename: [PROJECT_001]. Negotiated discount: [COMMERCIAL_TERM_001]
+ceiling: [AMOUNT_005]. These fictional commercial terms are included intentionally for testing block or
+mask policies.
+
+
+6. Duration and Termination
+The demonstration engagement runs from 15 October 2026 through 15 January 2027. Either party
+may terminate with 15 days’ written notice. Confidentiality obligations continue for two years after
+termination, subject to applicable law.
+
+
+7. Signatures
+ For the Client                               [PERSON_001] — Authorized Representative
+
+ For the Provider                             [PERSON_002] — Authorized Representative
+
+ Signature / date                                    ________________ / ________________
+
+Notice: This is a synthetic agreement for [INTERNAL_INFORMATION_002], not legal advice or an enforceable contract.
+
+
+
+
+
+[INTERNAL_INFORMATION_001] • fictitious identities and organizations • privacy testing only

@@ -1,0 +1,5 @@
+Patient: [PERSON_001]
+MRN: [MRN_001]
+Phone: [PHONE_001]
+Diagnosis: [HEALTH_CONDITION]
+Email [EMAIL_001] with the follow-up plan.

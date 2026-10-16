@@ -1,0 +1,21 @@
+{
+  "detector": "rules",
+  "synthetic_records": 8,
+  "true_positives": 9,
+  "false_positives": 2,
+  "missed_identifiers": 2,
+  "precision_exact_span_and_type": 0.8181818181818182,
+  "recall_exact_span_and_type": 0.8181818181818182,
+  "sensitive_values": 11,
+  "leaked_values": 2,
+  "leakage_rate": 0.18181818181818182,
+  "sensitive_value_removal_rate_including_blocks": 0.8181818181818181,
+  "approved_sensitive_values": 11,
+  "masking_accuracy_approved_values": 0.8181818181818181,
+  "approved_records": 8,
+  "blocked_records": 0,
+  "context_phrase_preservation": 1.0,
+  "masking_pipeline_latency_ms_mean": 0.44551262544700876,
+  "masking_pipeline_latency_ms_max": 0.9425129974260926,
+  "limitations": "Eight English synthetic cases, no confidence interval; correlated validators; blocked records count as removal, not successful masking; no zero-leakage claim."
+}

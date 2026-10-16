@@ -1,0 +1,18 @@
+model_list:
+  - model_name: privacy-mock
+    litellm_params:
+      model: openai/local-mock
+      api_base: os.environ/MOCK_API_BASE
+      api_key: local-mock-unused
+litellm_settings:
+  callbacks: [privacy_gateway.proxy_hook.approval_hook]
+  success_callback: []
+  failure_callback: []
+  cache: false
+  set_verbose: false
+  turn_off_message_logging: true
+general_settings:
+  master_key: os.environ/PRIVACY_PROXY_KEY
+  disable_spend_logs: true
+  disable_error_logs: true
+

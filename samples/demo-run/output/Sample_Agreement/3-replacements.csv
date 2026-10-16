@@ -1,0 +1,24 @@
+original,placeholder,type,action,found_by,confidence
+"Northstar Clinical
+Systems Pvt. Ltd.",[ORGANIZATION_001],ORGANIZATION,mask,gliner reference,0.946
+"28 Orchid Business Park, Sector 62, Gurugram, Haryana 122102",[ADDRESS_001],ADDRESS,mask,gliner reference regex,0.95
+Cedarbridge Analytics LLP,[ORGANIZATION_002],ORGANIZATION,mask,gliner reference,0.96
+"14 Willow Lane, Jaipur, Rajasthan 302019",[ADDRESS_002],ADDRESS,mask,gliner reference regex,0.95
+Riya Malhotra,[PERSON_001],PERSON,mask,gliner reference,0.955
+Adrian Sen,[PERSON_002],PERSON,mask,gliner reference,0.963
+riya.malhotra@example.com,[EMAIL_001],EMAIL,mask,gliner reference regex,0.95
+adrian.sen@example.com,[EMAIL_002],EMAIL,mask,gliner reference regex,0.95
+"Scope of Services
+Provider",[ORGANIZATION_003],ORGANIZATION,mask,gliner reference,0.455
+"INR 4,85,000",[AMOUNT_001],AMOUNT,mask,reference regex,0.95
+Initial milestone,[AMOUNT_002],AMOUNT,mask,gliner reference,0.378
+"INR 1,45,500",[AMOUNT_003],AMOUNT,mask,reference regex,0.95
+"INR 3,39,500",[AMOUNT_004],AMOUNT,mask,reference regex,0.95
+Demonstration content,[INTERNAL_INFORMATION_001],INTERNAL_INFORMATION,block,reference,0.366
+Project Blue Harbor,[PROJECT_001],PROJECT,mask,gliner reference,0.903
+17%. Confidential budget,[COMMERCIAL_TERM_001],COMMERCIAL_TERM,block,context reference,1.0
+"INR 5,20,000",[AMOUNT_005],AMOUNT,mask,reference regex,0.95
+Riya Malhotra,[PERSON_001],PERSON,mask,gliner reference,0.955
+Adrian Sen,[PERSON_002],PERSON,mask,gliner reference,0.963
+software testing,[INTERNAL_INFORMATION_002],INTERNAL_INFORMATION,block,gliner reference,0.355
+Demonstration content,[INTERNAL_INFORMATION_001],INTERNAL_INFORMATION,block,gliner reference,0.366

@@ -1,0 +1,21 @@
+{
+  "detector": "gliner",
+  "synthetic_records": 8,
+  "true_positives": 11,
+  "false_positives": 6,
+  "missed_identifiers": 0,
+  "precision_exact_span_and_type": 0.6470588235294118,
+  "recall_exact_span_and_type": 1.0,
+  "sensitive_values": 11,
+  "leaked_values": 0,
+  "leakage_rate": 0.0,
+  "sensitive_value_removal_rate_including_blocks": 1.0,
+  "approved_sensitive_values": 11,
+  "masking_accuracy_approved_values": 1.0,
+  "approved_records": 8,
+  "blocked_records": 0,
+  "context_phrase_preservation": 0.875,
+  "masking_pipeline_latency_ms_mean": 524.6553906254121,
+  "masking_pipeline_latency_ms_max": 605.8431870042114,
+  "limitations": "Eight English synthetic cases, no confidence interval; correlated validators; blocked records count as removal, not successful masking; no zero-leakage claim."
+}

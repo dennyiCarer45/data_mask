@@ -1,0 +1,19 @@
+# Opt-in Claude routing. Use only with synthetic data until evaluated for real records:
+#   docker compose -f compose.yaml -f compose.external.yaml up -d
+# Only the proxy joins the egress network and reads .env.anthropic (ANTHROPIC_API_KEY=...).
+# The gateway, which holds original text and request-local mappings, stays on the internal network.
+services:
+  gateway:
+    environment:
+      PRIVACY_EXTERNAL_ENABLED: "true"
+      PRIVACY_PROXY_MODEL: privacy-claude
+  proxy:
+    command: ["python", "-c", "from litellm import run_server; run_server()", "--config", "/app/config/litellm.external.yaml", "--host", "0.0.0.0", "--port", "4000"]
+    env_file: .env.anthropic
+    environment:
+      PRIVACY_PROXY_MODEL: privacy-claude
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-anthropic/claude-sonnet-5-5}
+    volumes: ["./config/litellm.external.example.yaml:/app/config/litellm.external.yaml:ro"]
+    networks: [private, egress]
+networks:
+  egress: {}

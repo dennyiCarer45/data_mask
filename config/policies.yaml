@@ -1,0 +1,37 @@
+# Server-managed configuration. Clients cannot override decisions or supply policies.
+version: 1
+defaults:
+  PERSON: mask
+  EMAIL: mask
+  PHONE: mask
+  ADDRESS: mask
+  MRN: mask
+  DATE_OF_BIRTH: mask
+  GOVERNMENT_ID: mask
+  BANK_ACCOUNT: mask
+  TAX_ID: mask
+  ORGANIZATION: mask
+  PROJECT: mask
+  DIAGNOSIS: mask
+  AMOUNT: mask
+  COMMERCIAL_TERM: block
+  INTERNAL_INFORMATION: block
+  SECRET: block
+  UNVERIFIED_TEXT: mask
+categories:
+  general: {}
+  healthcare:
+    DIAGNOSIS: generalize
+  invoices:
+    AMOUNT: mask
+  agreements:
+    COMMERCIAL_TERM: block
+  guidelines:
+    INTERNAL_INFORMATION: block
+generalizations:
+  DIAGNOSIS: "[HEALTH_CONDITION]"
+# Organization-specific phrases are literal strings, never executable regex.
+custom_terms:
+  PROJECT: ["Project Cedar", "Orion Vault"]
+  INTERNAL_INFORMATION: ["confidential roadmap"]
+

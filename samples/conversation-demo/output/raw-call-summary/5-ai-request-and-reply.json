@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "Summary of the follow-up call held on Tuesday afternoon.\n\nThe call opened with [PERSON_001] confirming that she had received the discharge papers from [ORGANIZATION_001]. She explained that her husband, [PERSON_002], had been admitted last week after a fall at home and that the ward doctors had since diagnosed him with [HEALTH_CONDITION] and [HEALTH_CONDITION]. [PERSON_003] said the family had found the first few days difficult because [PERSON_004] was not used to managing his own medication.\n\n[PERSON_003] asked whether the home-care nurse could visit them at [ADDRESS_001] rather than at her sister's flat, since [PERSON_004] would be staying at home for the next month. She also mentioned that their daughter, [PERSON_005], would be the main contact on weekdays and could be reached on [PHONE_001] or at [EMAIL_001].\n\nLater in the call [PERSON_006] raised a billing concern. The hospital had charged [AMOUNT_001] for the admission, but the insurer, [ORGANIZATION_002], had so far only approved part of it. She read out the policy member number [MRN_001] and asked us to chase the claim.\n\nBefore closing, [PERSON_007] from the care coordination team joined briefly and agreed to review [PERSON_004]'s insulin plan. [PERSON_003] thanked everyone and asked that all future letters be sent to the [ADDRESS_002] address. Next steps: [PERSON_008] to call [PERSON_005] on Friday; the billing team to follow up with [ORGANIZATION_003]; [PERSON_003] to share the latest blood test results by email.\n\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 25,
+  "category": "healthcare",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "Summary of the follow-up call held on Tuesday afternoon.\n\nThe call opened with [PERSON_001] confirming that she had received the discharge papers from [ORGANIZATION_001]. She explained that her husband, [PERSON_002], had been admitted last week after a fall at home and that the ward doctors had since diagnosed him with [HEALTH_CONDITION] and [HEALTH_CONDITION]. [PERSON_003] said the family had found the first few days difficult because [PERSON_004] was not used to managing his own medication.\n\n[PERSON_003] asked whether the home-care nurse could visit them at [ADDRESS_001] rather than at her sister's flat, since [PERSON_004] would be staying at home for the next month. She also mentioned that their daughter, [PERSON_005], would be the main contact on weekdays and could be reached on [PHONE_001] or at [EMAIL_001].\n\nLater in the call [PERSON_006] raised a billing concern. The hospital had charged [AMOUNT_001] for the admission, but the insurer, [ORGANIZATION_002], had so far only approved part of it. She read out the policy member number [MRN_001] and asked us to chase the claim.\n\nBefore closing, [PERSON_007] from the care coordination team joined briefly and agreed to review [PERSON_004]'s insulin plan. [PERSON_003] thanked everyone and asked that all future letters be sent to the [ADDRESS_002] address. Next steps: [PERSON_008] to call [PERSON_005] on Friday; the billing team to follow up with [ORGANIZATION_003]; [PERSON_003] to share the latest blood test results by email.\n"
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}

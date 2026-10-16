@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "customer_name: [PERSON_001]\naccount: [BANK_ACCOUNT_001]\namount: [AMOUNT_001]\nstatus: paid\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 3,
+  "category": "invoices",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "customer_name: [PERSON_001]\naccount: [BANK_ACCOUNT_001]\namount: [AMOUNT_001]\nstatus: paid"
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}

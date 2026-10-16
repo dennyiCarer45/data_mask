@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "[ORGANIZATION_001]\nent Account Number Card (SPECIMEN)\n[PERSON_001]\nName: [PERSON_002]\nFather's Name: [PERSON_003]\nDate of Birth: [DATE_OF_BIRTH_001]\n@ [TAX_ID_001]\nSignature\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 6,
+  "category": "general",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "[ORGANIZATION_001]\nent Account Number Card (SPECIMEN)\n[PERSON_001]\nName: [PERSON_002]\nFather's Name: [PERSON_003]\nDate of Birth: [DATE_OF_BIRTH_001]\n@ [TAX_ID_001]\nSignature"
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}

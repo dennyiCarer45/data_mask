@@ -1,0 +1,9 @@
+original,placeholder,type,action,found_by,confidence
+UNION OF INDIA,[ORGANIZATION_001],ORGANIZATION,mask,gliner reference,0.812
+KAO5 20190034871,[GOVERNMENT_ID_001],GOVERNMENT_ID,mask,context ocr reference regex,1.0
+Rohan Dsouza,[PERSON_001],PERSON,mask,context gliner reference,1.0
+Peter Dsouza,[PERSON_002],PERSON,mask,reference regex,1.0
+02/02/1992,[DATE_OF_BIRTH_001],DATE_OF_BIRTH,mask,reference regex,1.0
+B+,[DIAGNOSIS_001],DIAGNOSIS,mask,context reference,1.0
+"18 Church Street, Mangaluru",[ADDRESS_001],ADDRESS,mask,context gliner reference,1.0
+Karnataka - 575001,[ADDRESS_002],ADDRESS,mask,reference regex,0.95

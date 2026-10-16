@@ -1,0 +1,9 @@
+[ORGANIZATION_001]
+Elector Photo Identity Card (SPECIMEN)
+EPIC No: [GOVERNMENT_ID_001]
+Elector's Name: [PERSON_001]
+Father's Name: [PERSON_002]
+Sex: Female
+Date of Birth: [DATE_OF_BIRTH_001]
+Address: [ADDRESS_001],
+[ADDRESS_002]

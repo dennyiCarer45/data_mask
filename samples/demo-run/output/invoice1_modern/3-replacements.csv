@@ -1,0 +1,128 @@
+original,placeholder,type,action,found_by,confidence
+MORRISON & BLACKWELL LLP,[ORGANIZATION_001],ORGANIZATION,mask,gliner reference,0.89
+"350 Park Avenue, Suite 2400",[ADDRESS_001],ADDRESS,mask,gliner reference,0.649
+"New York, NY 10022",[ADDRESS_002],ADDRESS,mask,reference regex,0.95
+(212) 555-8800,[PHONE_001],PHONE,mask,reference regex,0.95
+billing@morrisonblackwell.com,[EMAIL_001],EMAIL,mask,reference regex,0.95
+"Volta Commerce Group, LLC",[ORGANIZATION_002],ORGANIZATION,mask,gliner reference,0.923
+Platform Technology Litigation Defense,[PROJECT_001],PROJECT,mask,context gliner reference,1.0
+"100 Commerce Drive, Suite 500",[ADDRESS_003],ADDRESS,mask,gliner reference,0.492
+"San Francisco, CA 94105",[ADDRESS_004],ADDRESS,mask,reference regex,0.95
+Volta Counsel,[ORGANIZATION_003],ORGANIZATION,mask,gliner reference,0.931
+Sarah Chen,[PERSON_001],PERSON,mask,gliner reference,0.948
+R. Blackwell,[PERSON_002],PERSON,mask,gliner reference,0.956
+"$1,050",[AMOUNT_001],AMOUNT,mask,reference regex,0.95
+"$2,100.00",[AMOUNT_002],AMOUNT,mask,reference regex,0.95
+Volta IP team,[ORGANIZATION_004],ORGANIZATION,mask,gliner reference,0.923
+D. Morrison,[PERSON_003],PERSON,mask,gliner reference,0.926
+"$1,200",[AMOUNT_003],AMOUNT,mask,reference regex,0.95
+"$1,800.00",[AMOUNT_004],AMOUNT,mask,reference regex,0.95
+L. Chambers,[PERSON_004],PERSON,mask,gliner reference,0.913
+FTC,[ORGANIZATION_005],ORGANIZATION,mask,gliner reference,0.807
+$800,[AMOUNT_005],AMOUNT,mask,reference regex,0.95
+"$2,400.00",[AMOUNT_006],AMOUNT,mask,reference regex,0.95
+P. Nakamura,[PERSON_005],PERSON,mask,gliner reference,0.973
+$410,[AMOUNT_007],AMOUNT,mask,reference regex,0.95
+"$1,845.00",[AMOUNT_008],AMOUNT,mask,reference regex,0.95
+K. Singh,[PERSON_006],PERSON,mask,gliner reference,0.98
+$500,[AMOUNT_009],AMOUNT,mask,reference regex,0.95
+"$2,750.00",[AMOUNT_010],AMOUNT,mask,reference regex,0.95
+T. Williams,[PERSON_007],PERSON,mask,gliner reference,0.962
+$360,[AMOUNT_011],AMOUNT,mask,reference regex,0.95
+"$1,080.00",[AMOUNT_012],AMOUNT,mask,reference regex,0.95
+A. Reyes,[PERSON_008],PERSON,mask,gliner reference,0.967
+$400,[AMOUNT_013],AMOUNT,mask,reference regex,0.95
+"$1,600.00",[AMOUNT_014],AMOUNT,mask,reference regex,0.95
+M. Torres,[PERSON_009],PERSON,mask,gliner reference,0.968
+$215,[AMOUNT_015],AMOUNT,mask,reference regex,0.95
+$967.50,[AMOUNT_016],AMOUNT,mask,reference regex,0.95
+B. Chen,[PERSON_010],PERSON,mask,gliner reference,0.961
+$310,[AMOUNT_017],AMOUNT,mask,reference regex,0.95
+"$1,550.00",[AMOUNT_018],AMOUNT,mask,reference regex,0.95
+G. Patel,[PERSON_011],PERSON,mask,gliner reference,0.964
+Volta,[ORGANIZATION_006],ORGANIZATION,mask,reference,0.923
+$170,[AMOUNT_019],AMOUNT,mask,reference regex,0.95
+"$1,020.00",[AMOUNT_020],AMOUNT,mask,reference regex,0.95
+Relativity,[ORGANIZATION_007],ORGANIZATION,mask,reference,0.501
+F. Brooks,[PERSON_012],PERSON,mask,gliner reference,0.949
+$195,[AMOUNT_021],AMOUNT,mask,reference regex,0.95
+$682.50,[AMOUNT_022],AMOUNT,mask,reference regex,0.95
+ECF,[ORGANIZATION_008],ORGANIZATION,mask,gliner reference,0.6
+H. Rivera,[PERSON_013],PERSON,mask,gliner reference,0.681
+$145,[AMOUNT_023],AMOUNT,mask,reference regex,0.95
+$580.00,[AMOUNT_024],AMOUNT,mask,reference regex,0.95
+J. Kim,[PERSON_014],PERSON,mask,gliner reference,0.956
+$170,[AMOUNT_019],AMOUNT,mask,reference regex,0.95
+$510.00,[AMOUNT_025],AMOUNT,mask,reference regex,0.95
+K. Singh,[PERSON_006],PERSON,mask,gliner reference,0.98
+$500,[AMOUNT_009],AMOUNT,mask,reference regex,0.95
+"$2,000.00",[AMOUNT_026],AMOUNT,mask,reference regex,0.95
+R. Blackwell,[PERSON_002],PERSON,mask,gliner reference,0.956
+"$1,050",[AMOUNT_001],AMOUNT,mask,reference regex,0.95
+"$1,575.00",[AMOUNT_027],AMOUNT,mask,reference regex,0.95
+Volta Counsel,[ORGANIZATION_003],ORGANIZATION,mask,gliner reference,0.931
+A. Reyes,[PERSON_008],PERSON,mask,gliner reference,0.967
+$400,[AMOUNT_013],AMOUNT,mask,reference regex,0.95
+"$1,400.00",[AMOUNT_028],AMOUNT,mask,reference regex,0.95
+B. Chen,[PERSON_010],PERSON,mask,gliner reference,0.961
+$310,[AMOUNT_017],AMOUNT,mask,reference regex,0.95
+$930.00,[AMOUNT_029],AMOUNT,mask,reference regex,0.95
+G. Patel,[PERSON_011],PERSON,mask,gliner reference,0.964
+$170,[AMOUNT_019],AMOUNT,mask,reference regex,0.95
+$850.00,[AMOUNT_030],AMOUNT,mask,reference regex,0.95
+F. Brooks,[PERSON_012],PERSON,mask,reference,0.949
+$195,[AMOUNT_021],AMOUNT,mask,reference regex,0.95
+$487.50,[AMOUNT_031],AMOUNT,mask,reference regex,0.95
+Volta Counsel,[ORGANIZATION_003],ORGANIZATION,mask,gliner reference,0.931
+Volta Outside Counsel,[ORGANIZATION_009],ORGANIZATION,mask,gliner reference,0.923
+R. Blackwell,[PERSON_002],PERSON,mask,gliner reference,0.956
+$412.00,[AMOUNT_032],AMOUNT,mask,reference regex,0.95
+R. Blackwell,[PERSON_002],PERSON,mask,gliner reference,0.956
+$289.00,[AMOUNT_033],AMOUNT,mask,reference regex,0.95
+$289/night,[AMOUNT_034],AMOUNT,mask,gliner reference regex,0.95
+$295,[AMOUNT_035],AMOUNT,mask,reference regex,0.95
+R. Blackwell,[PERSON_002],PERSON,mask,gliner reference,0.956
+$78.50,[AMOUNT_036],AMOUNT,mask,reference regex,0.95
+$82,[AMOUNT_037],AMOUNT,mask,reference regex,0.95
+R. Blackwell,[PERSON_002],PERSON,mask,gliner reference,0.956
+UberX,[ORGANIZATION_010],ORGANIZATION,mask,gliner reference,0.462
+$64.00,[AMOUNT_038],AMOUNT,mask,reference regex,0.95
+R. Blackwell,[PERSON_002],PERSON,mask,gliner reference,0.956
+$38.00,[AMOUNT_039],AMOUNT,mask,reference regex,0.95
+$40,[AMOUNT_040],AMOUNT,mask,reference regex,0.95
+K. Singh,[PERSON_006],PERSON,mask,gliner reference,0.98
+$287.00,[AMOUNT_041],AMOUNT,mask,reference regex,0.95
+K. Singh,[PERSON_006],PERSON,mask,gliner reference,0.98
+Hilton Garden Inn NYC,[ORGANIZATION_011],ORGANIZATION,mask,reference second_look,0.375
+$349.00,[AMOUNT_042],AMOUNT,mask,reference regex,0.95
+$349,[AMOUNT_043],AMOUNT,mask,reference regex,0.95
+$365,[AMOUNT_044],AMOUNT,mask,reference regex,0.95
+K. Singh,[PERSON_006],PERSON,mask,gliner reference,0.98
+$31.50,[AMOUNT_045],AMOUNT,mask,reference regex,0.95
+$34,[AMOUNT_046],AMOUNT,mask,reference regex,0.95
+K. Singh,[PERSON_006],PERSON,mask,gliner reference,0.98
+$70.00,[AMOUNT_047],AMOUNT,mask,reference regex,0.95
+$72,[AMOUNT_048],AMOUNT,mask,reference regex,0.95
+K. Singh,[PERSON_006],PERSON,mask,gliner reference,0.98
+$40,[AMOUNT_040],AMOUNT,mask,reference regex,0.95
+$36.00,[AMOUNT_049],AMOUNT,mask,reference regex,0.95
+K. Singh,[PERSON_006],PERSON,mask,gliner reference,0.98
+$55.00,[AMOUNT_050],AMOUNT,mask,reference regex,0.95
+$58,[AMOUNT_051],AMOUNT,mask,reference regex,0.95
+P. Nakamura,[PERSON_005],PERSON,mask,gliner reference,0.973
+USPTO,[ORGANIZATION_012],ORGANIZATION,mask,gliner reference,0.771
+$29.40,[AMOUNT_052],AMOUNT,mask,reference regex,0.95
+IRS,[ORGANIZATION_013],ORGANIZATION,mask,gliner reference,0.511
+$0.70,[AMOUNT_053],AMOUNT,mask,reference regex,0.95
+G. Patel,[PERSON_011],PERSON,mask,gliner reference,0.964
+Relativity,[ORGANIZATION_007],ORGANIZATION,mask,gliner reference,0.501
+"$3,850.00",[AMOUNT_054],AMOUNT,mask,reference regex,0.95
+$25,[AMOUNT_055],AMOUNT,mask,reference regex,0.95
+Westlaw,[ORGANIZATION_014],ORGANIZATION,mask,gliner reference,0.773
+Volta,[ORGANIZATION_006],ORGANIZATION,mask,reference,0.923
+"$26,127.50",[AMOUNT_056],AMOUNT,mask,reference regex,0.95
+"$5,589.40",[AMOUNT_057],AMOUNT,mask,reference regex,0.95
+"$31,716.90",[AMOUNT_058],AMOUNT,mask,reference regex,0.95
+Westlaw,[ORGANIZATION_014],ORGANIZATION,mask,gliner reference,0.773
+LexisNexis,[ORGANIZATION_015],ORGANIZATION,mask,gliner reference,0.881
+BillerAssist,[ORGANIZATION_016],ORGANIZATION,mask,reference second_look,0.374

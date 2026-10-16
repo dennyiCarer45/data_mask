@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "[ORGANIZATION_001]\nElector Photo Identity Card (SPECIMEN)\nEPIC No: [GOVERNMENT_ID_001]\nElector's Name: [PERSON_001]\nFather's Name: [PERSON_002]\nSex: Female\nDate of Birth: [DATE_OF_BIRTH_001]\nAddress: [ADDRESS_001],\n[ADDRESS_002]\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 7,
+  "category": "general",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "[ORGANIZATION_001]\nElector Photo Identity Card (SPECIMEN)\nEPIC No: [GOVERNMENT_ID_001]\nElector's Name: [PERSON_001]\nFather's Name: [PERSON_002]\nSex: Female\nDate of Birth: [DATE_OF_BIRTH_001]\nAddress: [ADDRESS_001],\n[ADDRESS_002]"
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}

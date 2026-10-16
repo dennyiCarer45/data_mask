@@ -1,0 +1,158 @@
+{
+  "detector": "rules",
+  "ocr": "tesseract 5.5.0 (eng+hin), min confidence 60",
+  "records_per_rendering": 13,
+  "results": {
+    "text": {
+      "records": 13,
+      "sensitive_values": 28,
+      "values_read_exactly": 28,
+      "literal_leaks": 3,
+      "near_leaks": 3,
+      "refused_records": 0,
+      "blocked_records": 0,
+      "unverified_words": 0,
+      "unlocated_in_review_copy": 0,
+      "retained_phrases": 13,
+      "retain_total": 13,
+      "leaked_types": [
+        {
+          "type": "PERSON",
+          "literal": true
+        },
+        {
+          "type": "ADDRESS",
+          "literal": true
+        },
+        {
+          "type": "PERSON",
+          "literal": true
+        }
+      ],
+      "leak_rate_including_near": 0.10714285714285714,
+      "context_phrase_preservation": 1.0,
+      "latency_ms_mean": 2.3
+    },
+    "pdf": {
+      "records": 13,
+      "sensitive_values": 28,
+      "values_read_exactly": 28,
+      "literal_leaks": 3,
+      "near_leaks": 3,
+      "refused_records": 0,
+      "blocked_records": 0,
+      "unverified_words": 0,
+      "unlocated_in_review_copy": 0,
+      "retained_phrases": 13,
+      "retain_total": 13,
+      "leaked_types": [
+        {
+          "type": "PERSON",
+          "literal": true
+        },
+        {
+          "type": "ADDRESS",
+          "literal": true
+        },
+        {
+          "type": "PERSON",
+          "literal": true
+        }
+      ],
+      "leak_rate_including_near": 0.10714285714285714,
+      "context_phrase_preservation": 1.0,
+      "latency_ms_mean": 11.1
+    },
+    "scanned_pdf": {
+      "records": 13,
+      "sensitive_values": 28,
+      "values_read_exactly": 27,
+      "literal_leaks": 3,
+      "near_leaks": 3,
+      "refused_records": 0,
+      "blocked_records": 0,
+      "unverified_words": 2,
+      "unlocated_in_review_copy": 0,
+      "retained_phrases": 13,
+      "retain_total": 13,
+      "leaked_types": [
+        {
+          "type": "PERSON",
+          "literal": true
+        },
+        {
+          "type": "ADDRESS",
+          "literal": true
+        },
+        {
+          "type": "PERSON",
+          "literal": true
+        }
+      ],
+      "leak_rate_including_near": 0.10714285714285714,
+      "context_phrase_preservation": 1.0,
+      "latency_ms_mean": 206.6
+    },
+    "image": {
+      "records": 13,
+      "sensitive_values": 28,
+      "values_read_exactly": 27,
+      "literal_leaks": 3,
+      "near_leaks": 3,
+      "refused_records": 0,
+      "blocked_records": 0,
+      "unverified_words": 2,
+      "unlocated_in_review_copy": 0,
+      "retained_phrases": 13,
+      "retain_total": 13,
+      "leaked_types": [
+        {
+          "type": "PERSON",
+          "literal": true
+        },
+        {
+          "type": "ADDRESS",
+          "literal": true
+        },
+        {
+          "type": "PERSON",
+          "literal": true
+        }
+      ],
+      "leak_rate_including_near": 0.10714285714285714,
+      "context_phrase_preservation": 1.0,
+      "latency_ms_mean": 188.5
+    },
+    "photo": {
+      "records": 13,
+      "sensitive_values": 28,
+      "values_read_exactly": 27,
+      "literal_leaks": 3,
+      "near_leaks": 3,
+      "refused_records": 0,
+      "blocked_records": 0,
+      "unverified_words": 2,
+      "unlocated_in_review_copy": 0,
+      "retained_phrases": 13,
+      "retain_total": 13,
+      "leaked_types": [
+        {
+          "type": "PERSON",
+          "literal": true
+        },
+        {
+          "type": "ADDRESS",
+          "literal": true
+        },
+        {
+          "type": "PERSON",
+          "literal": true
+        }
+      ],
+      "leak_rate_including_near": 0.10714285714285714,
+      "context_phrase_preservation": 1.0,
+      "latency_ms_mean": 191.7
+    }
+  },
+  "limitations": "13 English synthetic records, one generated font, no real scans or handwriting, no confidence interval. Blocked records still count leaks only if a value survives masking. Near leak = at least 80% character similarity, whitespace ignored. No zero-leakage claim."
+}

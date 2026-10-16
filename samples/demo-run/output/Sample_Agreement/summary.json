@@ -1,0 +1,23 @@
+{
+  "input": "Sample_Agreement.pdf",
+  "category": "agreements",
+  "masked_values": 21,
+  "by_type": {
+    "ADDRESS": 2,
+    "AMOUNT": 5,
+    "COMMERCIAL_TERM": 1,
+    "EMAIL": 2,
+    "INTERNAL_INFORMATION": 3,
+    "ORGANIZATION": 3,
+    "PERSON": 4,
+    "PROJECT": 1
+  },
+  "blocked_types": [
+    "COMMERCIAL_TERM",
+    "INTERNAL_INFORMATION"
+  ],
+  "sendable": false,
+  "still_detected_after_masking": 0,
+  "ocr": null,
+  "unlocated_in_masked_copy": 0
+}

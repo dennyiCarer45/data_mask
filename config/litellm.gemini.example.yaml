@@ -1,0 +1,18 @@
+# Opt-in only, used by compose.gemini.yaml. Same mandatory approval callback as the mock route.
+# Free-tier Gemini API usage may be used by Google to improve its products: synthetic data only.
+model_list:
+  - model_name: privacy-gemini
+    litellm_params:
+      model: os.environ/GEMINI_MODEL
+      api_key: os.environ/GEMINI_API_KEY
+litellm_settings:
+  callbacks: [privacy_gateway.proxy_hook.approval_hook]
+  success_callback: []
+  failure_callback: []
+  cache: false
+  set_verbose: false
+  turn_off_message_logging: true
+general_settings:
+  master_key: os.environ/PRIVACY_PROXY_KEY
+  disable_spend_logs: true
+  disable_error_logs: true

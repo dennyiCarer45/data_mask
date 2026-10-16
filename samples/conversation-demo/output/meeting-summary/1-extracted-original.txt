@@ -1,0 +1,16 @@
+Meeting summary - partner review
+
+Attendees: our account team and two representatives from Halden Logistics.
+
+Tomas Lindqvist opened by saying Halden Logistics was happy with delivery times but wanted
+clearer reporting. His colleague, Mei Tanaka, explained that their finance lead had queried three
+invoices from the last quarter, the largest being EUR 18,900.00. Tomas asked whether Project
+Cedar could include a shared dashboard so both sides could see shipment status.
+
+Mei said she could be contacted directly at mei.tanaka@halden.example.test or on +46 70 123
+45 67, and that invoices should now go to their new office at 22 Sveavagen, Stockholm 113 50.
+She also noted that Tomas would be on leave for most of December, so she would approve any
+changes in his absence.
+
+Action items: our team to send a draft dashboard to Mei; Tomas to confirm the reporting fields
+before he leaves; both sides to meet again in January.

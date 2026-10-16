@@ -1,0 +1,17 @@
+original,placeholder,type,action,found_by,confidence
+Halden Logistics,[ORGANIZATION_001],ORGANIZATION,mask,gliner reference,0.973
+Tomas Lindqvist,[PERSON_001],PERSON,mask,gliner reference,0.979
+Halden Logistics,[ORGANIZATION_001],ORGANIZATION,mask,gliner reference,0.973
+Mei Tanaka,[PERSON_002],PERSON,mask,gliner reference,0.976
+"EUR 18,900.00",[AMOUNT_001],AMOUNT,mask,reference regex,0.95
+Tomas,[PERSON_003],PERSON,mask,reference,0.979
+"Project
+Cedar",[PROJECT_001],PROJECT,mask,dictionary gliner reference,1.0
+Mei,[PERSON_004],PERSON,mask,gliner reference,0.976
+mei.tanaka@halden.example.test,[EMAIL_001],EMAIL,mask,gliner reference regex,0.976
+"+46 70 123
+45 67",[PHONE_001],PHONE,mask,gliner reference,0.492
+"22 Sveavagen, Stockholm 113 50",[ADDRESS_001],ADDRESS,mask,gliner reference,0.667
+Tomas,[PERSON_003],PERSON,mask,gliner reference,0.979
+Mei,[PERSON_004],PERSON,mask,gliner reference,0.976
+Tomas,[PERSON_003],PERSON,mask,gliner reference,0.979

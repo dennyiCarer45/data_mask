@@ -1,0 +1,24 @@
+{
+  "input": "voter-id-style.jpg",
+  "category": "general",
+  "masked_values": 7,
+  "by_type": {
+    "ADDRESS": 2,
+    "DATE_OF_BIRTH": 1,
+    "GOVERNMENT_ID": 1,
+    "ORGANIZATION": 1,
+    "PERSON": 2
+  },
+  "blocked_types": [],
+  "sendable": true,
+  "still_detected_after_masking": 0,
+  "ocr": {
+    "engine": "tesseract 5.5.0",
+    "languages": "eng+hin",
+    "words": 37,
+    "unverified_words": 0,
+    "min_confidence": 60.0
+  },
+  "unlocated_in_masked_copy": 0,
+  "ai_call": 200
+}

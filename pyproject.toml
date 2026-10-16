@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "local-privacy-gateway"
+version = "0.1.0"
+description = "Local, fail-closed data privacy gateway for LLM requests"
+requires-python = ">=3.11,<3.14"
+license = "AGPL-3.0-or-later"
+dependencies = [
+  "fastapi==0.143.1", "uvicorn>=0.35,<1", "pydantic==2.14.1",
+  "pydantic-settings>=2.10,<3", "httpx>=0.28,<0.29", "PyYAML>=6.0.2,<7",
+  "python-multipart>=0.0.22,<1", "guardrails-ai==0.11.0",
+  "gliner==0.2.29", "transformers==5.16.1", "torch==2.14.1",
+  "PyMuPDF==1.28.2", "python-docx==1.2.0", "pillow==12.2.0",
+]
+
+[project.optional-dependencies]
+proxy = ["litellm[proxy]==1.105.1"]
+dev = ["pytest>=8.4,<10", "pytest-asyncio>=1,<2", "ruff>=0.12,<1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["privacy_gateway"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = ["model: requires locally provisioned GLiNER weights", "integration: starts the actual LiteLLM proxy"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+

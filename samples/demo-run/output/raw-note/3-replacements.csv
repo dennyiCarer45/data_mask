@@ -1,0 +1,6 @@
+original,placeholder,type,action,found_by,confidence
+Mira Vale,[PERSON_001],PERSON,mask,context gliner reference,1.0
+MRN-45821,[MRN_001],MRN,mask,context reference regex,1.0
++91 98765 43210,[PHONE_001],PHONE,mask,context reference regex,1.0
+Type 2 diabetes,[HEALTH_CONDITION],DIAGNOSIS,generalize,context gliner reference,1.0
+mira.vale@example.test,[EMAIL_001],EMAIL,mask,gliner reference regex,0.95

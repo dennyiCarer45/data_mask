@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "SAMPLE / NOT VALID FOR PAYMENT | All names, identifiers and addresses are fictional\n[ORGANIZATION_001]\n[ADDRESS_001]\n[EMAIL_001] | [PHONE_001]\nPATIENT INVOICE\nSAMPLE | FICTIONAL DATA\nInvoice no. INV-2026-1042 Invoice date 15 Oct 2026\nPatient name [PERSON_001] Patient ID [MRN_001]\nDate of birth [DATE_OF_BIRTH_001] Visit date 14 Oct 2026\nDepartment General Medicine Payment status PARTIALLY PAID\nBILLING DETAILS\nBilling address: [ADDRESS_002]\nPatient email: [EMAIL_002] Insurance ID: [MRN_002]\nVisit note: [DIAGNOSIS_001] follow-up (fictional clinical detail for privacy testing)\nITEMIZED CHARGES\nDescription Qty Amount (INR)\nGeneral physician consultation [AMOUNT_001]\nComplete blood count (CBC) 1 [AMOUNT_002]\nLipid profile 1 [AMOUNT_003]\nElectrocardiogram (ECG) 1 [AMOUNT_004]\nPrescribed medicines 1 [AMOUNT_005]\nObservation room charge 1 [AMOUNT_006]\nNursing and monitoring [AMOUNT_007]\nSubtotal [AMOUNT_008]\nDiscount [AMOUNT_009]\nTax (illustrative) [AMOUNT_010]\nTOTAL AMOUNT [AMOUNT_011]\nAdvance paid / BALANCE DUE [AMOUNT_012] / [AMOUNT_013]\nPAYMENT INFORMATION\nPayment method: UPI | Transaction reference: [MRN_003] | Balance due date: 22 Oct 2026\nThis document is entirely synthetic and intended only for testing document extraction, sensitive-entity\ndetection, masking, and policy enforcement. It is not a real medical invoice or proof of\ntreatment/payment.\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 25,
+  "category": "invoices",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "SAMPLE / NOT VALID FOR PAYMENT | All names, identifiers and addresses are fictional\n[ORGANIZATION_001]\n[ADDRESS_001]\n[EMAIL_001] | [PHONE_001]\nPATIENT INVOICE\nSAMPLE | FICTIONAL DATA\nInvoice no. INV-2026-1042 Invoice date 15 Oct 2026\nPatient name [PERSON_001] Patient ID [MRN_001]\nDate of birth [DATE_OF_BIRTH_001] Visit date 14 Oct 2026\nDepartment General Medicine Payment status PARTIALLY PAID\nBILLING DETAILS\nBilling address: [ADDRESS_002]\nPatient email: [EMAIL_002] Insurance ID: [MRN_002]\nVisit note: [DIAGNOSIS_001] follow-up (fictional clinical detail for privacy testing)\nITEMIZED CHARGES\nDescription Qty Amount (INR)\nGeneral physician consultation [AMOUNT_001]\nComplete blood count (CBC) 1 [AMOUNT_002]\nLipid profile 1 [AMOUNT_003]\nElectrocardiogram (ECG) 1 [AMOUNT_004]\nPrescribed medicines 1 [AMOUNT_005]\nObservation room charge 1 [AMOUNT_006]\nNursing and monitoring [AMOUNT_007]\nSubtotal [AMOUNT_008]\nDiscount [AMOUNT_009]\nTax (illustrative) [AMOUNT_010]\nTOTAL AMOUNT [AMOUNT_011]\nAdvance paid / BALANCE DUE [AMOUNT_012] / [AMOUNT_013]\nPAYMENT INFORMATION\nPayment method: UPI | Transaction reference: [MRN_003] | Balance due date: 22 Oct 2026\nThis document is entirely synthetic and intended only for testing document extraction, sensitive-entity\ndetection, masking, and policy enforcement. It is not a real medical invoice or proof of\ntreatment/payment."
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}

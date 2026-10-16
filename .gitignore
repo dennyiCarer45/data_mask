@@ -1,0 +1,19 @@
+.venv/
+.venv313/
+.python/
+.runtime/
+.cache/
+models/
+.env
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+.local/
+
+# Provider key files (.env.gemini, .env.anthropic, ...) and TLS material
+.env.*
+*.pem
+*.key

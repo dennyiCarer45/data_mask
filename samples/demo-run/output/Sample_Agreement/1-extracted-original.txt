@@ -1,0 +1,77 @@
+SERVICE & CONFIDENTIALITY AGREEMENT
+
+Agreement No. AGR-DEMO-2026-041 | Effective: 15 October 2026
+
+SYNTHETIC SAMPLE — NOT A REAL RECORD
+
+
+1. Parties
+This Service & Confidentiality Agreement ("Agreement") is entered into between Northstar Clinical
+Systems Pvt. Ltd. ("Client"), 28 Orchid Business Park, Sector 62, Gurugram, Haryana 122102, and
+Cedarbridge Analytics LLP ("Provider"), 14 Willow Lane, Jaipur, Rajasthan 302019. All entities and
+details are fictional.
+
+ Client contact                               Riya Malhotra, Operations Lead
+
+ Provider contact                             Adrian Sen, Delivery Manager
+
+ Client email                                 riya.malhotra@example.com
+
+ Provider email                              adrian.sen@example.com
+
+ Reference number                           NCS/PROC/2026/041
+
+
+2. Scope of Services
+Provider will design and test a document-processing prototype that receives invoice, agreement, and
+healthcare-guideline text, identifies sensitive content, and returns policy-approved masked output.
+Deliverables include an API demonstration, test cases, and a deployment guide.
+
+
+3. Commercial Terms
+ Project fee                              INR 4,85,000 (illustrative)
+
+ Initial milestone                           INR 1,45,500 payable within 10 days of signing
+
+ Final milestone                            INR 3,39,500 payable following acceptance
+
+ Payment reference                         DEMO-ACCT-7421 (fictitious; not a real banking
+                                                     instruction)
+
+
+4. Confidentiality & Data Protection
+Each party must protect non-public operational data, patient-related information, pricing, contract
+terms, and credentials. The Provider must not transmit Client source documents or direct identifiers
+to external AI services without the Client’s explicit written authorization. Test files will use synthetic
+data unless separately approved.
+
+
+
+
+Demonstration content • fictitious identities and organizations • privacy testing only
+5. Restricted Information — Illustrative
+Internal project codename: Project Blue Harbor. Negotiated discount: 17%. Confidential budget
+ceiling: INR 5,20,000. These fictional commercial terms are included intentionally for testing block or
+mask policies.
+
+
+6. Duration and Termination
+The demonstration engagement runs from 15 October 2026 through 15 January 2027. Either party
+may terminate with 15 days’ written notice. Confidentiality obligations continue for two years after
+termination, subject to applicable law.
+
+
+7. Signatures
+ For the Client                               Riya Malhotra — Authorized Representative
+
+ For the Provider                             Adrian Sen — Authorized Representative
+
+ Signature / date                                    ________________ / ________________
+
+Notice: This is a synthetic agreement for software testing, not legal advice or an enforceable contract.
+
+
+
+
+
+Demonstration content • fictitious identities and organizations • privacy testing only

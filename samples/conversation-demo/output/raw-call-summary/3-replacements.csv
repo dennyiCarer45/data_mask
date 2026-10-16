@@ -1,0 +1,26 @@
+original,placeholder,type,action,found_by,confidence
+Asha Rao,[PERSON_001],PERSON,mask,gliner reference,0.986
+Lakeview Memorial Hospital,[ORGANIZATION_001],ORGANIZATION,mask,gliner reference,0.943
+Vikram Rao,[PERSON_002],PERSON,mask,gliner reference,0.959
+type 2 diabetes,[HEALTH_CONDITION],DIAGNOSIS,generalize,gliner reference,0.877
+early stage chronic kidney disease,[HEALTH_CONDITION],DIAGNOSIS,generalize,gliner reference,0.833
+Asha,[PERSON_003],PERSON,mask,reference,0.986
+Vikram,[PERSON_004],PERSON,mask,gliner reference,0.948
+Asha,[PERSON_003],PERSON,mask,gliner reference,0.986
+"14 Hillcrest Lane, Koramangala, Bengaluru 560034",[ADDRESS_001],ADDRESS,mask,gliner reference,0.937
+Vikram,[PERSON_004],PERSON,mask,gliner reference,0.948
+Priya,[PERSON_005],PERSON,mask,gliner reference,0.907
+98450 12345,[PHONE_001],PHONE,mask,gliner reference regex,0.95
+priya.rao@example.test,[EMAIL_001],EMAIL,mask,gliner reference regex,0.95
+Mrs. Rao,[PERSON_006],PERSON,mask,gliner reference,0.827
+"INR 48,250.00",[AMOUNT_001],AMOUNT,mask,reference regex,0.95
+Bluepeak Health Insurance,[ORGANIZATION_002],ORGANIZATION,mask,gliner reference,0.953
+MRN-778213,[MRN_001],MRN,mask,gliner reference regex,0.95
+Dr. Kavya Menon,[PERSON_007],PERSON,mask,gliner reference,0.956
+Vikram,[PERSON_004],PERSON,mask,gliner reference,0.948
+Asha,[PERSON_003],PERSON,mask,gliner reference,0.986
+Hillcrest Lane,[ADDRESS_002],ADDRESS,mask,gliner reference,0.937
+Kavya,[PERSON_008],PERSON,mask,gliner reference,0.956
+Priya,[PERSON_005],PERSON,mask,gliner reference,0.907
+Bluepeak,[ORGANIZATION_003],ORGANIZATION,mask,gliner reference,0.856
+Asha,[PERSON_003],PERSON,mask,gliner reference,0.986

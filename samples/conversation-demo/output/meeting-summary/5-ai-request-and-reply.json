@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "Meeting summary - partner review\n\nAttendees: our account team and two representatives from [ORGANIZATION_001].\n\n[PERSON_001] opened by saying [ORGANIZATION_001] was happy with delivery times but wanted\nclearer reporting. His colleague, [PERSON_002], explained that their finance lead had queried three\ninvoices from the last quarter, the largest being [AMOUNT_001]. [PERSON_003] asked whether [PROJECT_001] could include a shared dashboard so both sides could see shipment status.\n\n[PERSON_004] said she could be contacted directly at [EMAIL_001] or on [PHONE_001], and that invoices should now go to their new office at [ADDRESS_001].\nShe also noted that [PERSON_003] would be on leave for most of December, so she would approve any\nchanges in his absence.\n\nAction items: our team to send a draft dashboard to [PERSON_004]; [PERSON_003] to confirm the reporting fields\nbefore he leaves; both sides to meet again in January.\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 14,
+  "category": "general",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "Meeting summary - partner review\n\nAttendees: our account team and two representatives from [ORGANIZATION_001].\n\n[PERSON_001] opened by saying [ORGANIZATION_001] was happy with delivery times but wanted\nclearer reporting. His colleague, [PERSON_002], explained that their finance lead had queried three\ninvoices from the last quarter, the largest being [AMOUNT_001]. [PERSON_003] asked whether [PROJECT_001] could include a shared dashboard so both sides could see shipment status.\n\n[PERSON_004] said she could be contacted directly at [EMAIL_001] or on [PHONE_001], and that invoices should now go to their new office at [ADDRESS_001].\nShe also noted that [PERSON_003] would be on leave for most of December, so she would approve any\nchanges in his absence.\n\nAction items: our team to send a draft dashboard to [PERSON_004]; [PERSON_003] to confirm the reporting fields\nbefore he leaves; both sides to meet again in January."
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}

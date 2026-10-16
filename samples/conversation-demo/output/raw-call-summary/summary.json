@@ -1,0 +1,21 @@
+{
+  "input": "raw-call-summary.txt",
+  "category": "healthcare",
+  "masked_values": 25,
+  "by_type": {
+    "ADDRESS": 2,
+    "AMOUNT": 1,
+    "DIAGNOSIS": 2,
+    "EMAIL": 1,
+    "MRN": 1,
+    "ORGANIZATION": 3,
+    "PERSON": 14,
+    "PHONE": 1
+  },
+  "blocked_types": [],
+  "sendable": true,
+  "still_detected_after_masking": 0,
+  "ocr": null,
+  "unlocated_in_masked_copy": null,
+  "ai_call": 200
+}

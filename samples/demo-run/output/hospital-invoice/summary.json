@@ -1,0 +1,22 @@
+{
+  "input": "hospital-invoice.pdf",
+  "category": "invoices",
+  "masked_values": 25,
+  "by_type": {
+    "ADDRESS": 2,
+    "AMOUNT": 13,
+    "DATE_OF_BIRTH": 1,
+    "DIAGNOSIS": 1,
+    "EMAIL": 2,
+    "MRN": 3,
+    "ORGANIZATION": 1,
+    "PERSON": 1,
+    "PHONE": 1
+  },
+  "blocked_types": [],
+  "sendable": true,
+  "still_detected_after_masking": 0,
+  "ocr": null,
+  "unlocated_in_masked_copy": 0,
+  "ai_call": 200
+}

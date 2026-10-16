@@ -1,0 +1,20 @@
+# Opt-in browser access to the review page at http://127.0.0.1:8010/review:
+#   docker compose -f compose.yaml -f compose.ui.yaml up -d
+# Docker publishes no ports for containers that are only on the internal network. Rather than give
+# the gateway (which holds originals and request-local mappings) an internet route, a stdlib byte
+# relay joins both networks and forwards loopback traffic to gateway:8000. The relay has egress
+# but parses, stores, and logs nothing. The gateway stays on the internal network only.
+services:
+  gateway:
+    ports: !reset []
+  ui-relay:
+    image: local-privacy-gateway:dev
+    command: ["python", "scripts/ui_relay.py", "--listen", "0.0.0.0:8000", "--target", "gateway:8000"]
+    ports: ["127.0.0.1:8010:8000"]
+    networks: [private, ingress]
+    depends_on: [gateway]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+networks:
+  ingress: {}

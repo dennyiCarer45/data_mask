@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "[ORGANIZATION_001]\n[PERSON_001]\nDOB: [DATE_OF_BIRTH_001]\nS/O [PERSON_002]\nFemale\n[GOVERNMENT_ID_001]\nAadhaar - proof of identity\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 5,
+  "category": "general",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "[ORGANIZATION_001]\n[PERSON_001]\nDOB: [DATE_OF_BIRTH_001]\nS/O [PERSON_002]\nFemale\n[GOVERNMENT_ID_001]\nAadhaar - proof of identity"
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}

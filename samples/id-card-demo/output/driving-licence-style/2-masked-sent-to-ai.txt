@@ -1,0 +1,11 @@
+[ORGANIZATION_001] - DRIVING LICENCE
+Transport Department, Karnataka (SPECIMEN)
+DL No: [GOVERNMENT_ID_001]
+Name: [PERSON_001]
+S/O: [PERSON_002]
+DOB: [DATE_OF_BIRTH_001]
+Blood Group: [DIAGNOSIS_001]
+Address: [ADDRESS_001],
+[ADDRESS_002]
+Valid Till: 01/02/2039
+Class of vehicle: LMV, MCWG

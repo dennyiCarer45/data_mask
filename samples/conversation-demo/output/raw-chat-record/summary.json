@@ -1,0 +1,20 @@
+{
+  "input": "raw-chat-record.json",
+  "category": "general",
+  "masked_values": 13,
+  "by_type": {
+    "ADDRESS": 1,
+    "AMOUNT": 1,
+    "BANK_ACCOUNT": 1,
+    "EMAIL": 1,
+    "ORGANIZATION": 1,
+    "PERSON": 7,
+    "PHONE": 1
+  },
+  "blocked_types": [],
+  "sendable": true,
+  "still_detected_after_masking": 0,
+  "ocr": null,
+  "unlocated_in_masked_copy": null,
+  "ai_call": 200
+}

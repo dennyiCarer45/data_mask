@@ -1,0 +1,16 @@
+{
+  "input": "raw-record.json",
+  "category": "invoices",
+  "masked_values": 3,
+  "by_type": {
+    "AMOUNT": 1,
+    "BANK_ACCOUNT": 1,
+    "PERSON": 1
+  },
+  "blocked_types": [],
+  "sendable": true,
+  "still_detected_after_masking": 0,
+  "ocr": null,
+  "unlocated_in_masked_copy": null,
+  "ai_call": 200
+}

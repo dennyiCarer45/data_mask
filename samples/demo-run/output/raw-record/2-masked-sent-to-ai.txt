@@ -1,0 +1,4 @@
+customer_name: [PERSON_001]
+account: [BANK_ACCOUNT_001]
+amount: [AMOUNT_001]
+status: paid

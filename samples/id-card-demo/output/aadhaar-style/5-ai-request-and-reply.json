@@ -1,0 +1,18 @@
+{
+  "message": {
+    "role": "assistant",
+    "content": "[ORGANIZATION_001]\nAadhaar - Unique Identification (SPECIMEN)\n[PERSON_001]\nDOB: [DATE_OF_BIRTH_001]\nFemale\nC/O: [PERSON_002]\nAddress: [ADDRESS_001],\n[ADDRESS_002]\n[GOVERNMENT_ID_001]\nVID: [GOVERNMENT_ID_002]\nSummarise this document in three bullet points."
+  },
+  "masked_spans": 8,
+  "category": "general",
+  "sent_messages": [
+    {
+      "role": "user",
+      "content": "[ORGANIZATION_001]\nAadhaar - Unique Identification (SPECIMEN)\n[PERSON_001]\nDOB: [DATE_OF_BIRTH_001]\nFemale\nC/O: [PERSON_002]\nAddress: [ADDRESS_001],\n[ADDRESS_002]\n[GOVERNMENT_ID_001]\nVID: [GOVERNMENT_ID_002]"
+    },
+    {
+      "role": "user",
+      "content": "Summarise this document in three bullet points."
+    }
+  ]
+}
