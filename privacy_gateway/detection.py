@@ -73,16 +73,17 @@ DATE = (
     rf"(?:\d{{1,2}}[ /.-](?:\d{{1,2}}|{MONTH})[ /.,-]+\d{{2,4}}"
     rf"|\d{{4}}-\d{{1,2}}-\d{{1,2}}|{MONTH}[ \t]+\d{{1,2}},?[ \t]+\d{{4}})"
 )
-# Labeled values whose label may lack ":" (PDF tables print "Date of birth 14 Apr 1993").
+# Labeled values whose label may lack ":" (PDF tables print "Date of birth 14 Apr 1993"). A table
+# cell border also separates them ("| Date of birth | 09 March 1984 |").
 VALUE_PATTERNS = [
     (
         "DATE_OF_BIRTH",
         rf"(?:\bdate[ _]of[ _]birth|\bbirth[ _]?date|\bdob|\bd\.o\.b\.?"
-        rf"|\bborn(?:[ \t]+on)?)(?![a-z])[ \t]*[\"']?[ \t]*[:=-]?[ \t]*(?:\r?\n[ \t]*)?[\"']?"
+        rf"|\bborn(?:[ \t]+on)?)(?![a-z])[ \t]*[\"']?[ \t]*[:=|-]?[ \t]*(?:\r?\n[ \t]*)?[\"']?"
         rf"(?P<value>{DATE})",
     ),
     # Indian ID cards often print only the year of birth.
-    ("DATE_OF_BIRTH", r"\b(?:year[ _]of[ _]birth|yob)[ \t]*[:=-]?[ \t]*(?P<value>\d{4})\b"),
+    ("DATE_OF_BIRTH", r"\b(?:year[ _]of[ _]birth|yob)[ \t]*[:=|-]?[ \t]*(?P<value>\d{4})\b"),
     # Relation prefixes on ID cards, with or without a colon ("S/O Ravi Kumar, 12 Lake Road").
     ("PERSON", r"\b[sdwc][ \t]*/[ \t]*o\b[ \t]*:?[ \t]*(?P<value>[^\W\d_][^\n\r,;:]*)"),
 ]
@@ -102,8 +103,85 @@ EXAMPLE_TOKEN = r"<[A-Z][A-Z_]*(?:_\d+)?>"
 
 
 def table_label(labels: str) -> str:
-    """A label line with at most two leading words ("Facility address", "Insurance member ID")."""
-    return rf"^[ \t]*(?:[a-z]+[ \t]+){{0,2}}(?P<label>{labels})[ \t]*"
+    """A label line with at most two leading words ("Facility address", "Insurance member ID").
+    A heading marker from layout extraction ("### Patient name") may precede it."""
+    return rf"^[ \t]*(?:#{{1,6}}[ \t]+)?(?:[a-z]+[ \t]+){{0,2}}(?P<label>{labels})[ \t]*"
+
+
+# A labeled value ends at a column gap: a tab or three or more spaces (layout extraction writes
+# wide gaps that way), or a table cell border.
+COLUMN_GAP = r"\t| {3,}"
+TABLE_ROW = re.compile(r"(?m)^\|.*\|[ \t]*$")
+TABLE_SEPARATOR = re.compile(r"[ \t]*:?-{3,}:?[ \t]*")
+
+
+def markdown_tables(text: str):
+    """Tables written as "| a | b |" lines. Yields (rows, has_header); a row lists the
+    (start, end) offsets of each cell's text, a separator row is not a row."""
+    rows, header, previous = [], False, None
+    for match in [*TABLE_ROW.finditer(text), None]:
+        if match is None or (previous is not None and match.start() != previous + 1):
+            if rows:
+                yield rows, header
+            rows, header = [], False
+        if match is None:
+            break
+        previous = match.end()
+        bars = [match.start() + i for i, c in enumerate(match[0]) if c == "|"]
+        cells = []
+        for left, right in zip(bars, bars[1:], strict=False):
+            piece = text[left + 1 : right]
+            start = left + 1 + len(piece) - len(piece.lstrip())
+            cells.append((start, max(start, left + 1 + len(piece.rstrip()))))
+        if cells and all(TABLE_SEPARATOR.fullmatch(text[s:e] or "-") for s, e in cells):
+            header = header or len(rows) == 1
+            continue
+        rows.append(cells)
+    return
+
+
+def label_kind(cell: str):
+    """The CONTEXT type whose label this whole table cell is ("Patient name", "Phone:")."""
+    cell = cell.strip().rstrip(":").strip()
+    for kind, labels in CONTEXT.items():
+        if re.fullmatch(rf"(?:[a-z]+[ \t]+){{0,2}}(?:{labels})", cell, re.I):
+            return kind
+    return None
+
+
+def table_entities(text: str):
+    """Values under label columns ("| Name | Phone |" header) or beside label cells
+    ("| Phone | 98765 43210 |" rows), plus the label cells' ranges."""
+    entities, labels = [], []
+    for rows, header in markdown_tables(text):
+        first = [
+            label_kind(text[s:e]) if len(row) >= 2 else None for row in rows for s, e in row[:1]
+        ]
+        label_rows = sum(map(bool, first)) * 2 >= len(rows)
+        kinds = [label_kind(text[s:e]) for s, e in rows[0]] if header else []
+        # Two label cells in a header row ("| Name | Phone | Ward |") name label columns. One
+        # label among three or more columns does too, unless the rows themselves start with labels.
+        strong = sum(map(bool, kinds)) >= 2
+        weak = len(kinds) >= 3 and any(kinds) and not label_rows
+        if strong or weak:
+            pairs = [
+                (cell, kind, label)
+                for row in rows[1:]
+                for cell, kind, label in zip(row, kinds, rows[0], strict=False)
+                if kind
+            ]
+            labels += [label for label, kind in zip(rows[0], kinds, strict=True) if kind]
+        elif label_rows:
+            pairs = [(row[1], kind, row[0]) for row, kind in zip(rows, first, strict=True) if kind]
+        else:
+            continue
+        for (start, end), kind, label in pairs:
+            labels.append(label)
+            if start < end:
+                entities.append(
+                    Entity(start=start, end=end, entity_type=kind, confidence=1.0, source="context")
+                )
+    return entities, labels
 
 
 # Prefixed document and ticket numbers ("INV-2026-00417", "PO-44718", "CS-20431"). GLiNER labels
@@ -141,7 +219,7 @@ GENERIC_WORDS = frozenset(
     dear new success general medicine medical paid unpaid partially owed outstanding remaining
     still method upi cash card cheque check neft imps rtgs transfer inr usd eur gbp
     currency diagnostic diagnostics test tests lab labs laboratory screening checkup
-    pricing terms credentials operational related restricted public non illustrative identifying
+    pricing terms credentials operational operating related restricted public non illustrative identifying
     identity linked to diagnosis privacy quality lead facility assigned
     procedures nursing monitoring care consultation consultations observation room charge charges
     medicines prescribed prescription visit visits diagnoses mrn dob id list metric unpublished
@@ -244,16 +322,18 @@ class RuleDetector:
                 )
         for kind, labels in CONTEXT.items():
             patterns = (
-                rf"(?im)\b(?:{labels})[ \t]*[\"']?[ \t]*[:=][ \t]*[\"']?(?P<value>[^\n\r;\"}}]+)",
+                rf"(?im)\b(?:{labels})[ \t]*[\"']?[ \t]*[:=][ \t]*[\"']?(?P<value>[^\n\r;\"}}|]+)",
                 # Table layout (DOCX/PDF): a short label line, value on the next line.
-                rf"(?im){table_label(labels)}\r?\n[ \t]*(?P<value>[^\n\r;\"}}]+)",
+                rf"(?im){table_label(labels)}\r?\n[ \t]*(?P<value>[^\n\r;\"}}|]+)",
             )
             for match in (m for pattern in patterns for m in re.finditer(pattern, text)):
                 raw = match["value"]
-                value = raw.strip().rstrip(",")
+                lead = len(raw) - len(raw.lstrip())
+                # The next column is not part of this value ("Patient: Mira Vale     Ward 7").
+                value = re.split(COLUMN_GAP, raw[lead:])[0].strip().rstrip(",")
                 if not value:
                     continue
-                start = match.start("value") + len(raw) - len(raw.lstrip())
+                start = match.start("value") + lead
                 found.append(
                     Entity(
                         start=start,
@@ -263,6 +343,7 @@ class RuleDetector:
                         source="context",
                     )
                 )
+        found.extend(table_entities(text)[0])
         for kind, values in self.custom_terms.items():
             for value in values:
                 if not value:
@@ -379,6 +460,8 @@ class DetectionEngine:
                     for m in re.finditer(rf"(?im){table_label(labels)}(?=\r?\n)", text)
                 ]
                 key_ranges += [(m.start(), m.end()) for m in re.finditer(EXAMPLE_TOKEN, text)]
+                # Label cells of tables ("| Phone | … |"), the same labels in table form.
+                key_ranges += table_entities(text)[1]
                 found.extend(
                     e
                     for e in self.model.detect(text)

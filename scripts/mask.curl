@@ -1,0 +1,31 @@
+# curl config: mask a document with a gateway's LAN relay. Same file on any OS.
+# Needs curl 8.3+ (variables) and the server's cert.pem (not secret) in the current folder.
+#
+#   Windows PowerShell:  $env:PRIVACY_API_KEY="..."; $env:FILE="invoice.pdf"; $env:CATEGORY="invoices"
+#                        curl.exe -K mask.curl
+#   Linux / macOS / Git Bash:
+#                        PRIVACY_API_KEY=... FILE=invoice.pdf CATEGORY=invoices curl -K mask.curl
+#
+# Change the address below to your server. Categories: general, healthcare, invoices,
+# agreements, guidelines. The reply is JSON; "sanitized_text" is what the AI would receive.
+# It holds no original values. A document with a blocked type (e.g. a commercial term) is
+# refused with "policy_blocked"; /preview/document shows it anyway, with the originals.
+
+variable = %PRIVACY_API_KEY
+variable = %FILE
+variable = %CATEGORY=general
+# Optional: only these types are masked, e.g. MASK=PERSON,PHONE. Empty uses the server policy.
+variable = %MASK=
+
+expand-url = "https://192.168.1.17:8443/mask/document"
+expand-header = "Authorization: Bearer {{PRIVACY_API_KEY}}"
+expand-form = "category={{CATEGORY}}"
+expand-form = "mask={{MASK}}"
+expand-form = "file=@{{FILE}}"
+
+cacert = "cert.pem"
+# Windows only needs this (a self-signed certificate has no revocation list); others ignore it.
+ssl-no-revoke
+silent
+show-error
+fail-with-body

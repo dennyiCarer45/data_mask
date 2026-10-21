@@ -4,6 +4,7 @@ import io
 import re
 
 from .documents import open_image
+from .layout import union
 
 NOTE = (
     "Review copy. Masked text is covered; photos, QR codes, signatures, and other graphics "
@@ -18,8 +19,9 @@ def overlaps(a_start, a_end, b_start, b_end):
 def render_masked(extracted, spans):
     """Return ({"media_type", "content", "note"}, unlocated) or (None, 0) for text inputs.
 
-    unlocated counts masked spans that could not be found on the page; their text is still
-    masked in the sanitized output, but the review copy shows them uncovered.
+    unlocated counts masked spans the review copy does not cover: no printed position, or (PDF)
+    text still readable in the copy after redaction. Their text is still masked in the sanitized
+    output, but the review copy shows them uncovered.
     """
     if extracted.kind == "pdf":
         return _pdf(extracted, spans)
@@ -28,38 +30,47 @@ def render_masked(extracted, spans):
     return None, 0
 
 
+def line_rects(boxes):
+    """Merge character or word boxes on one line into one rectangle per line and page."""
+    merged = []
+    for page, box in sorted(boxes, key=lambda item: (item[0], item[1][1], item[1][0])):
+        if merged:
+            last_page, last = merged[-1]
+            height = min(last[3] - last[1], box[3] - box[1])
+            same_line = min(last[3], box[3]) - max(last[1], box[1]) >= 0.5 * height
+            if last_page == page and same_line and box[0] - last[2] <= max(height, 3):
+                merged[-1] = (page, union([last, box]))
+                continue
+        merged.append((page, box))
+    return merged
+
+
 def _pdf(extracted, spans):
     import pymupdf
+
+    from .masking import literal
 
     with pymupdf.open(stream=extracted.content, filetype="pdf") as doc:
         found = []
         for span in spans:
-            rects = [
-                (page, pymupdf.Rect(box))
+            boxes = [
+                (page, box)
                 for start, end, page, box in extracted.boxes
                 if overlaps(start, end, span["start"], span["end"])
             ]
-            for start, end, page in extracted.layers:
-                if not overlaps(start, end, span["start"], span["end"]):
-                    continue
-                fragment = extracted.text[max(start, span["start"]) : min(end, span["end"])]
-                for part in filter(None, (line.strip() for line in fragment.splitlines())):
-                    rects.extend((page, rect) for rect in doc[page].search_for(part))
-            found.append(rects)
+            found.append([(page, pymupdf.Rect(box)) for page, box in line_rects(boxes)])
         everything = [item for rects in found for item in rects]
         labelled = set()
         for span, rects in zip(spans, found, strict=True):
             for page, rect in rects:
-                # Label every box once (repeated names, both cells of a merged rate/amount).
-                # A box inside a larger masked box ("Volta" within "Volta Commerce Group") is
-                # left to that box's label so labels do not pile up.
+                # Label every box once. A box inside a larger masked box is left to that
+                # box's label so labels do not pile up.
                 key = (page, tuple(rect))
                 inside = any(
                     p == page and other != rect and other.contains(rect) for p, other in everything
                 )
                 _redact(doc[page], rect, "" if inside or key in labelled else span["token"])
                 labelled.add(key)
-        unlocated = sum(not rects for rects in found)
         for page in doc:
             page.apply_redactions(
                 images=pymupdf.PDF_REDACT_IMAGE_PIXELS, graphics=pymupdf.PDF_REDACT_LINE_ART_NONE
@@ -67,6 +78,14 @@ def _pdf(extracted, spans):
         # Drop metadata, attachments, hidden text, scripts, and links from the review copy.
         doc.scrub()
         content = doc.tobytes(garbage=3, deflate=True)
+    # Check the copy as a reader would: any masked value still readable is reported uncovered.
+    with pymupdf.open(stream=content, filetype="pdf") as copy:
+        remaining = " ".join(" ".join(page.get_text().split()) for page in copy).casefold()
+    unlocated = 0
+    for span, rects in zip(spans, found, strict=True):
+        value = " ".join(extracted.text[span["start"] : span["end"]].split()).casefold()
+        leftover = len(value) >= 3 and re.search(literal(value), remaining)
+        unlocated += not rects or bool(leftover)
     return {"media_type": "application/pdf", "content": content, "note": NOTE}, unlocated
 
 

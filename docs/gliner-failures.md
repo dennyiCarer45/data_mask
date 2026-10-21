@@ -36,6 +36,9 @@ false alarm makes the whole document unsendable). **Over-mask** = harmless text 
 | 2026-10-16 | ID card photos | `Aadhaar`, `Elector`, `SPECIMEN`, `DRIVING LICENCE Transport Department` | GOVERNMENT_ID / PERSON / ORGANIZATION | Over-mask | Generic words |
 | 2026-10-16 | ID card photos | `Blood Group: B+` | Not detected (no rule or label) | Miss (health data) | `Blood group` label is DIAGNOSIS |
 | 2026-10-16 | ID card photos | `Perman` (OCR split `Permanent` across lines) | PERSON on second look | Over-mask | Not fixed (OCR fragment) |
+| 2026-10-19 | Healthcare guideline (DOCX), after layout extraction | `unpublished operating metrics` (a category description) | INTERNAL_INFORMATION (0.359), which blocked the guideline; not flagged before tables were written as rows | False alarm (block) | Generic words (`operating`) |
+| 2026-10-19 | Legal invoice, after layout extraction | `High-Cost` (Market column), `Legal / Research Analyst` | Masked once table cells became one row | Over-mask | Not fixed |
+| 2026-10-19 | Synthetic research paper | `Baseline` (table cell) | ORGANIZATION | Over-mask | Not fixed |
 
 Policy question, not changed: public bodies and tools (`FTC`, `IRS`, `USPTO`, `Westlaw`,
 `LexisNexis`, `UberX`, `Relativity`, `ECF`, `BillerAssist`, hotel brands) are masked as

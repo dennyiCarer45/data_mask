@@ -3,6 +3,8 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 Category = Literal["healthcare", "invoices", "agreements", "guidelines", "general"]
+# Entity types the caller wants masked; checked against the policy types by policy.selection.
+MaskTypes = list[str] | None
 
 
 class StrictModel(BaseModel):
@@ -11,6 +13,7 @@ class StrictModel(BaseModel):
 
 class TextRequest(StrictModel):
     category: Category = "general"
+    mask: MaskTypes = Field(None, max_length=32)
     text: str | None = Field(None, min_length=1, max_length=32000)
     data: dict | list | None = None
 
@@ -28,6 +31,7 @@ class Message(StrictModel):
 
 class ChatRequest(StrictModel):
     category: Category = "general"
+    mask: MaskTypes = Field(None, max_length=32)
     messages: list[Message] = Field(min_length=1, max_length=32)
     max_tokens: int = Field(512, ge=1, le=2048)
     # From /preview: refuse to send unless the first message masks to exactly what was reviewed.

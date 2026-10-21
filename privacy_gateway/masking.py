@@ -26,6 +26,8 @@ class MaskContext:
     approved: list[str] = field(default_factory=list, repr=False)
     # Review mode only: per text, what the input check still detected after masking.
     findings: list[list[dict]] = field(default_factory=list, repr=False)
+    # The caller's selection of types to mask (policy.selection); kept across clear().
+    only: frozenset[str] | None = None
 
     def clear(self):
         self.replacements.clear()
@@ -86,13 +88,15 @@ def mask(text, entities, category, policies, context: MaskContext, spans=None):
     cursor = 0
     count = 0
     for group in overlapping_groups(entities):
-        protected = [e for e in group if policies.action(category, e.entity_type) != "allow"]
+        protected = [
+            e for e in group if policies.action(category, e.entity_type, context.only) != "allow"
+        ]
         if not protected:
             continue
         winner = max(
             protected,
             key=lambda e: (
-                PRIORITY[policies.action(category, e.entity_type)],
+                PRIORITY[policies.action(category, e.entity_type, context.only)],
                 # A rule's type is exact (an email is an EMAIL even if GLiNER says PERSON);
                 # the broad phone pattern is the exception.
                 e.source in RULE_SOURCES and e.entity_type != "PHONE",
@@ -101,7 +105,7 @@ def mask(text, entities, category, policies, context: MaskContext, spans=None):
                 e.entity_type != "PHONE",
             ),
         )
-        action = policies.action(category, winner.entity_type)
+        action = policies.action(category, winner.entity_type, context.only)
         if action == "block" and spans is None:
             raise PrivacyError("policy_blocked")
         start, end = min(e.start for e in group), max(e.end for e in group)

@@ -386,7 +386,6 @@ def test_gender_and_role_words_are_not_names():
 def test_masked_pdf_labels_fit_narrow_table_cells():
     import pymupdf
 
-    from privacy_gateway.documents import Extracted
     from privacy_gateway.redaction import render_masked
 
     doc = pymupdf.open()
@@ -398,8 +397,8 @@ def test_masked_pdf_labels_fit_narrow_table_cells():
     page.insert_text((400, 160), "$510.00", fontsize=8)
     content = doc.tobytes()
     doc.close()
-    with pymupdf.open(stream=content, filetype="pdf") as source:
-        text = source[0].get_text("text", sort=True)
+    extracted = DocumentProcessor().extract_document(content, "invoice.pdf")
+    text = extracted.text
     spans = [
         {"start": text.index("$800"), "end": text.index("$800") + 4, "token": "[AMOUNT_001]"},
         {
@@ -409,7 +408,6 @@ def test_masked_pdf_labels_fit_narrow_table_cells():
         },
         {"start": text.index("$510.00"), "end": text.index("$510.00") + 7, "token": "[AMOUNT_003]"},
     ]
-    extracted = Extracted(text, "pdf", content, layers=[(0, len(text), 0)])
     document, unlocated = render_masked(extracted, spans)
     assert unlocated == 0
     with pymupdf.open(stream=document["content"], filetype="pdf") as masked:
@@ -423,3 +421,43 @@ def test_masked_pdf_labels_fit_narrow_table_cells():
     assert shown.count("002") == 2
     # Medium cells fall back to the number rather than a label too small to be drawn.
     assert "003" in shown
+
+
+def test_masked_pdf_covers_exact_characters_only():
+    import pymupdf
+
+    from privacy_gateway.redaction import render_masked
+
+    doc = pymupdf.open()
+    page = doc.new_page()
+    page.insert_text((72, 100), "Name: Ann Lee", fontsize=10)
+    page.insert_text((72, 130), "Annual planning with the Lee family is public.", fontsize=10)
+    content = doc.tobytes()
+    doc.close()
+    extracted = DocumentProcessor().extract_document(content, "note.pdf")
+    start = extracted.text.index("Ann Lee")
+    spans = [{"start": start, "end": start + 7, "token": "[PERSON_001]"}]
+    document, unlocated = render_masked(extracted, spans)
+    with pymupdf.open(stream=document["content"], filetype="pdf") as masked:
+        shown = masked[0].get_text()
+    assert unlocated == 0 and "Ann Lee" not in shown
+    # Text search used to find "Ann" inside other words; exact boxes cover only the value.
+    assert "Annual planning with the Lee family is public." in shown
+
+
+def test_masked_pdf_reports_values_it_could_not_cover():
+    import pymupdf
+
+    from privacy_gateway.redaction import render_masked
+
+    doc = pymupdf.open()
+    doc.new_page().insert_text((72, 100), "Name: Ann Lee", fontsize=10)
+    content = doc.tobytes()
+    doc.close()
+    extracted = DocumentProcessor().extract_document(content, "note.pdf")
+    extracted.boxes = []  # as if the value's position were unknown
+    start = extracted.text.index("Ann Lee")
+    _, unlocated = render_masked(
+        extracted, [{"start": start, "end": start + 7, "token": "[PERSON_001]"}]
+    )
+    assert unlocated == 1

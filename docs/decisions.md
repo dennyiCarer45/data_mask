@@ -228,3 +228,52 @@ unchanged. Over-masked describing phrases are a second source of output refusals
 - **Company short forms:** the first word of an organization ending in a legal suffix (LLC, LLP,
   Inc, Ltd, Group, …) is masked wherever it appears as a whole word. Names without a suffix are
   not shortened, because their first words are often common ("Platform Technology …").
+
+## Layout-aware extraction (2026-10-19)
+
+- **Why:** only text reaches the AI, and `get_text(sort=True)` read straight across the page, so
+  two-column pages were spliced line by line and DOCX tables came out one cell per line. A labeled
+  value also ran on into the next column (`Patient: Mira Vale ⟶ Right column text` became one
+  PERSON).
+- **PyMuPDF only, no new dependency:** `rawdict` gives every character's box, font size, and bold
+  flag; `find_tables()` gives bordered tables. PyMuPDF suggests its `pymupdf_layout` package; not
+  added (new dependency, unreviewed). `pymupdf4llm` and Docling were also not added.
+- **Conservative column rule:** a vertical gap is treated as a column break only when both sides
+  look like running text (3+ lines, 20+ characters per line on average). Otherwise lines on one
+  baseline stay on one row, as before, so labels stay beside their values on forms and invoices.
+  Bands split at horizontal gaps of one line height or more.
+- **Tables need 2+ rows and 2+ columns:** PyMuPDF reports shaded rows and frames as one-row or
+  one-column tables; those stay text (seen on the sample agreement).
+- **Markup is not document text:** headings (`#`), table rows (`| a | b |`), page markers, and
+  `Page header:`/`Page footer:` labels have no page position, so they are never covered in the
+  review copy and do not use placeholder syntax (`[A-Z…]`), which input validation reserves.
+- **Exact review-copy boxes:** the copy now covers each masked character's own box instead of
+  searching the page for the masked text, which also hit the same text elsewhere and inside other
+  words. The copy is read back after redaction and any masked value still readable is counted in
+  `unlocated_spans`.
+- **Detection follows the structure:** labeled values end at a tab, three or more spaces, or `|`;
+  table columns under a label header, and label cells beside values, are masked by rules; label
+  cells are exempt from model hits like other labels. The date-of-birth rule accepts `|`.
+- **DOCX:** breaks and tabs are kept, list numbers rendered from `numbering.xml`, headings from
+  style names and outline levels. Extraction fails closed if any paragraph of a read part was not
+  written into the text. Nested tables are flattened into their cell. PDF lists are not detected
+  (their printed numbers and bullets are kept as text).
+- **Not done:** re-joining hyphenated words, three-column layouts, borderless tables, raising the
+  32,000-character limit for long papers.
+
+## Caller-selected types (2026-10-21)
+
+- **Request field `mask`:** `/mask/*`, `/preview/*` and `/llm/*` accept a list of entity types
+  (JSON `"mask": ["PERSON", "PHONE"]`; multipart `mask=PERSON,PHONE`). Listed types are protected
+  with the category's action (`generalize` stays `generalize`; `allow` becomes `mask`); every other
+  type is allowed and sent as is. Without the field the server policy applies unchanged.
+- **Not selectable:** blocked types (`SECRET`, `COMMERCIAL_TERM`, `INTERNAL_INFORMATION` by
+  default) and `UNVERIFIED_TEXT` keep their configured action, so a selection can never send a
+  secret or an unreadable OCR word. Unknown or empty selections fail with `invalid_mask_types`.
+- **Same selection everywhere:** it is carried on the request's `MaskContext`, so masking, the
+  mask-again step, and the input and output validators all treat unselected types as allowed.
+  `/llm/*` with `approved_preview_sha256` must repeat the preview's selection or gets
+  `preview_mismatch`.
+- **Tradeoff:** this lets any API-key holder send names, amounts, diagnoses or organizations it
+  chose not to mask. That is an explicit caller decision, never a default, inside the single
+  API-key trust domain. The proxy path (`proxy_hook.py`) does not take a selection.

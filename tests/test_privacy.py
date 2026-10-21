@@ -667,3 +667,91 @@ def test_id_card_words_are_generic():
         if e.source == "gliner"
     ]
     assert found == ["Farida Sheikh"]
+
+
+def test_labeled_value_stops_at_a_column_gap():
+    text = "Patient: Mira Vale      Ward 7B\nPhone: 9876543210\tBed 4"
+    values = {text[e.start : e.end] for e in RuleDetector().detect(text) if e.source == "context"}
+    assert "Mira Vale" in values and "9876543210" in values
+    assert not any("Ward" in value or "Bed" in value for value in values)
+
+
+def test_label_rows_in_tables_are_masked_by_rules():
+    text = "| Name | Mira Vale |\n| --- | --- |\n| Phone | 9876543210 |\n| Ward | 7B |"
+    found = {(text[e.start : e.end], e.entity_type) for e in RuleDetector().detect(text)}
+    assert ("Mira Vale", "PERSON") in found and ("9876543210", "PHONE") in found
+    assert not any(value in ("Name", "Phone", "7B") for value, _ in found)
+
+
+def test_table_header_rule_is_narrow():
+    # A two-column label/value table whose first row is not a header of label columns.
+    text = "| Client contact | Mira Vale |\n| --- | --- |\n| Client email | m@example.test |"
+    found = {text[e.start : e.end] for e in RuleDetector().detect(text)}
+    assert "Client email" not in found
+
+
+def test_date_of_birth_in_a_table_row():
+    text = "| Patient name | Meera Kapoor |\n| --- | --- |\n| Date of birth | 09 March 1984 |"
+    found = {(text[e.start : e.end], e.entity_type) for e in RuleDetector().detect(text)}
+    assert ("09 March 1984", "DATE_OF_BIRTH") in found and ("Meera Kapoor", "PERSON") in found
+
+
+def test_caller_selected_types_are_masked_and_others_kept(client):
+    response = client.post(
+        "/mask/text", json={"text": SYNTHETIC, "category": "healthcare", "mask": ["PHONE", "MRN"]}
+    )
+    assert response.status_code == 200, response.text
+    assert response.json()["sanitized_text"] == (
+        "Patient: John Smith\nPatient ID: [MRN_001]\nPhone: [PHONE_001]\nDiagnosis: Diabetes"
+    )
+    assert response.json()["mask"] == ["MRN", "PHONE"]
+
+
+def test_caller_selection_reaches_transport_unchanged(client, spy):
+    payload = {"mask": ["PHONE"], "messages": [{"role": "user", "content": SYNTHETIC}]}
+    response = client.post("/llm/chat", json=payload)
+    assert response.status_code == 200, response.text
+    sent = spy.calls[0][0]["content"]
+    assert "John Smith" in sent and "9876543210" not in sent and "[PHONE_001]" in sent
+
+
+def test_caller_selection_can_mask_an_allowed_type(pipeline, policies):
+    policies.config.categories["healthcare"]["DIAGNOSIS"] = "allow"
+    masked, _, context = pipeline.sanitize([SYNTHETIC], "healthcare", only=frozenset({"DIAGNOSIS"}))
+    assert masked[0].endswith("Diagnosis: [DIAGNOSIS_001]") and "John Smith" in masked[0]
+    context.clear()
+
+
+@pytest.mark.parametrize("text", ["Password: synthetic-password", "confidential roadmap"])
+def test_caller_selection_cannot_unblock(client, spy, text):
+    payload = {"mask": ["PERSON"], "messages": [{"role": "user", "content": text}]}
+    response = client.post("/llm/chat", json=payload)
+    assert response.status_code == 422 and not spy.calls
+    assert text not in response.text
+
+
+@pytest.mark.parametrize("types", [[], ["NOT_A_TYPE"], ["PERSON", "person"]])
+def test_caller_selection_rejects_unknown_types(client, types):
+    response = client.post("/mask/text", json={"text": SYNTHETIC, "mask": types})
+    assert response.status_code == 422
+    assert response.json() == {"error": "invalid_mask_types"}
+
+
+def test_caller_selection_in_document_form(client):
+    content = SYNTHETIC.encode()
+    files = {"file": ("note.txt", content)}
+    response = client.post("/preview/document", files=files, data={"mask": "PERSON, PHONE"})
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["mask"] == ["PERSON", "PHONE"]
+    assert {s["entity_type"] for s in body["spans"]} == {"PERSON", "PHONE"}
+    assert "MRN-45821" in body["sanitized_text"]
+
+
+@pytest.mark.parametrize(("field", "status"), [("", 200), ("PERSON,", 422), ("PERSON,,PHONE", 422)])
+def test_caller_selection_form_field(client, field, status):
+    files = {"file": ("note.txt", SYNTHETIC.encode())}
+    response = client.post("/mask/document", files=files, data={"mask": field})
+    assert response.status_code == status, response.text
+    if status == 200:
+        assert response.json()["mask"] is None and "John Smith" not in response.text

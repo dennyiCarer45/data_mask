@@ -136,7 +136,7 @@ Step 4 combines several local detectors. Their findings are merged before maskin
 | Method | What it finds | Example |
 |---|---|---|
 | Pattern rules | Values with a fixed shape: email, phone (9+ digits), MRN, SSN/Aadhaar, IBAN, PAN/GSTIN, money amounts, `sk-`/`AKIA` API keys | `MRN-45821`, `USD 420.00` |
-| Labeled fields | Any value after a known label, up to the end of the line | `Customer name: Mira Vale` |
+| Labeled fields | Any value after a known label, up to the end of the line or the next column (a tab, three or more spaces, or a table cell border); in tables, values under a label column header or beside a label cell | `Customer name: Mira Vale`, `\| Phone \| 98765 43210 \|` |
 | Dates of birth | A date after a birth label, with or without a colon | `Date of birth 14 Apr 1993` |
 | Custom terms | Literal phrases from `custom_terms` in `config/policies.yaml` (never regex) | `Project Cedar` |
 | GLiNER model | Unlabeled names, organizations, addresses, diagnoses, commercial terms, internal information | `…between Brambleton Ltd and…` |
@@ -299,11 +299,27 @@ TXT must be valid UTF-8. JSON is flattened into text while retaining keys, paths
 the service does not promise the original JSON shape. PDF text layers are read directly and every
 image region (including inline images) is rendered at up to 300 dpi and read with OCR; text already
 in the text layer is not duplicated. Blank pages, annotations, forms, attachments, and repaired files
-are rejected, and image-bearing pages are rejected when OCR is unavailable.
-The one tolerated attachment is a C2PA provenance manifest ("Content Credentials"), which is
-never read or forwarded.
+are rejected, and image-bearing pages are rejected when OCR is unavailable. Link annotations are
+allowed. The one tolerated attachment is a C2PA provenance manifest ("Content Credentials"), which
+is never read or forwarded.
 DOCX paragraphs, tables, headers/footers, comments, footnotes, and endnotes are read locally;
 images, embedded files, fields, tracked changes, drawings, and equations are rejected.
+
+Before masking, the layout is written into the text (`privacy_gateway/layout.py`), so the AI
+receives structure and not only words:
+
+| Structure | PDF | DOCX |
+|---|---|---|
+| Reading order | Bands separated by wide gaps, then two text columns read one after the other; short side-by-side text (labels and values, invoice headers) stays on one row | Document order |
+| Headings | Short single-line text in a larger font (`#`, `##`) or all bold (`###`) | Heading and Title styles, outline levels |
+| Tables | Bordered tables found by PyMuPDF as `\| cell \| cell \|` rows | Every table, with merged columns kept aligned; nested tables are flattened into their cell |
+| Lists | Not detected | List numbers and bullets (`1.`, `a.`, `-`) |
+| Pages | `--- page N ---` between pages; margin text repeated on two or more pages labelled `Page header:` / `Page footer:` | Header and footer parts labelled the same way; footnotes, endnotes, and comments in labelled sections, with `[^1]` markers |
+| Line breaks, tabs | Wide gaps between pieces of one row written as three or more spaces | Kept |
+
+This markup is not printed in the document, so it never becomes a masked value. Layout detection
+is heuristic: three or more columns, text wrapped around figures, borderless tables, and equations
+can still come out in a wrong order or as plain lines.
 Document binaries are never forwarded. Masking endpoints are local previews; `/llm/chat` takes
 original text/history and performs its own enforcement. Reserved placeholder syntax in new input
 is rejected, so do not feed preview output back into chat.
@@ -341,14 +357,17 @@ steps. Stop LAN access with `docker compose -f compose.yaml -f compose.ui.yaml -
 stop lan-relay`, and on untrusted networks do not start it.
 
 The page is static: it asks for `PRIVACY_API_KEY` (kept only in that tab) and calls only the
-`/preview/*` endpoints, which never reach the transport. It takes a file (PDF, image, DOCX, TXT,
-JSON), raw text, or raw JSON, and shows:
+`/preview/*` endpoints, which never reach the transport. It takes a dropped or chosen file (PDF,
+image, DOCX, TXT, JSON) or pasted text; a paste that parses as a JSON object or array is sent as
+structured `data`. It has no category picker: it always uses the server default `general`, which
+masks every detected type (use the API to choose another category). It shows:
 
 - the original document next to a **masked copy of the same document** (PDF or PNG with every
   masked word blacked out and labeled with its placeholder);
 - the extracted text next to the masked text the AI would receive, with paired highlights;
 - every replacement: type, action, original value, placeholder, detectors, confidence;
-- OCR statistics, blocked types, and any masked value it could not locate on the page.
+- OCR statistics, blocked types, and any masked value it could not cover on the page (no printed
+  position, or still readable when the PDF copy is read back after redaction).
 
 The masked copy is a review aid. It does not remove photos, QR codes (an Aadhaar QR code holds the
 card details), signatures, or other graphics, so do not share it as a redacted ID. It is never sent
@@ -371,6 +390,14 @@ curl http://127.0.0.1:8000/llm/document -H "Authorization: Bearer $PRIVACY_API_K
 | `POST /preview/document` | multipart `file`, `category` | The same, plus `ocr` and `masked_document` (`media_type`, `base64`, `note`, `unlocated_spans`) |
 | `POST /llm/chat` | adds optional `approved_preview_sha256` | adds `sent_messages`, the exact masked messages sent |
 | `POST /llm/document` | multipart `file`, `category`, optional `question`, `max_tokens`, `approved_preview_sha256` | as `/llm/chat` |
+
+Every `/mask/*`, `/preview/*` and `/llm/*` endpoint also takes an optional `mask`: the entity types
+to mask, as a JSON list (`"mask": ["PERSON", "PHONE"]`) or a comma-separated form field
+(`-F "mask=PERSON,PHONE"`). Only those types are masked; everything else is kept. Blocked types
+(secrets, commercial terms, internal information) are still refused and unreadable OCR text is still
+masked. Responses echo the selection in `mask` (`null` when the server policy was used). Types:
+`PERSON EMAIL PHONE ADDRESS MRN DATE_OF_BIRTH GOVERNMENT_ID BANK_ACCOUNT TAX_ID ORGANIZATION PROJECT
+DIAGNOSIS AMOUNT COMMERCIAL_TERM INTERNAL_INFORMATION SECRET UNVERIFIED_TEXT`.
 
 The preview returns original values next to their placeholders to the caller who sent them. That is
 inside the single API-key trust domain, but treat preview responses as confidential.

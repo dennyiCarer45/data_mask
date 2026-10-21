@@ -62,7 +62,8 @@ class InputPrivacyValidator(Validator):
             # labels such as "Email:" as entities. Only this request's placeholder characters
             # are discounted; any other text inside a detected span is still checked.
             for entity in self.engine.detect(value):
-                if self.policies.action(metadata["category"], entity.entity_type) == "allow":
+                kind = entity.entity_type
+                if self.policies.action(metadata["category"], kind, context.only) == "allow":
                     continue
                 remainder = visible[entity.start : entity.end]
                 if not re.search(r"\w", remainder):

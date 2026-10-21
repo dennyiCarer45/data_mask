@@ -6,52 +6,91 @@
 <title>Masking Review</title>
 <style>
 :root {
-  --bg: #f6f7f9; --panel: #ffffff; --ink: #1c2330; --muted: #5d6676; --line: #dde1e7;
-  --accent: #2557d6; --ok: #1d7a46; --warn: #a15c00; --bad: #b42318;
+  --bg: #f4f6fa; --panel: #ffffff; --ink: #172033; --muted: #5d6676; --line: #dfe3ea; --soft: #f0f3f8;
+  --accent: #2f5bea; --accent-ink: #ffffff; --accent-soft: #e8eeff;
+  --ok: #157347; --ok-soft: #e6f4ec; --warn: #9a5b00; --warn-soft: #fdf3e2; --bad: #b42318; --bad-soft: #fdeceb;
   --hl-orig: #fde68a; --hl-mask: #c7e0ff; --hl-block: #fecaca; --hl-unv: #e9d5ff; --focus: #f59e0b;
+  --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 4px 16px rgba(16, 24, 40, .05);
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #12151b; --panel: #1b2029; --ink: #e6e9ef; --muted: #9aa3b2; --line: #2c3340;
-    --accent: #7aa2ff; --ok: #4ade80; --warn: #fbbf24; --bad: #f87171;
-    --hl-orig: #6b5410; --hl-mask: #1d3f73; --hl-block: #7a1d1d; --hl-unv: #4c2a75; --focus: #f59e0b;
+    --bg: #0f1218; --panel: #181d26; --ink: #e6e9ef; --muted: #9aa3b2; --line: #2a313d; --soft: #1f2530;
+    --accent: #7c9cff; --accent-ink: #0f1218; --accent-soft: #1e2a4a;
+    --ok: #4ade80; --ok-soft: #12291c; --warn: #fbbf24; --warn-soft: #2d2410; --bad: #f87171; --bad-soft: #2f1616;
+    --hl-orig: #6b5410; --hl-mask: #1d3f73; --hl-block: #7a1d1d; --hl-unv: #4c2a75;
+    --shadow: none;
   }
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink);
-  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
-header { padding: 16px 24px; border-bottom: 1px solid var(--line); background: var(--panel);
-  display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
-header h1 { font-size: 18px; margin: 0; }
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1180px; margin: 0 auto; padding: 32px 20px 64px; display: grid; gap: 18px; }
+header { display: flex; align-items: center; gap: 14px; }
+.logo { width: 42px; height: 42px; border-radius: 12px; background: var(--accent); color: var(--accent-ink);
+  display: grid; place-items: center; flex: none; }
+header h1 { font-size: 22px; margin: 0; letter-spacing: -.01em; }
 header p { margin: 0; color: var(--muted); }
-main { padding: 20px 24px 48px; max-width: 1500px; margin: 0 auto; display: grid; gap: 16px; }
-section { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
-h2 { font-size: 15px; margin: 0 0 12px; }
-label { font-weight: 600; display: block; margin-bottom: 4px; }
-input, select, textarea, button { font: inherit; color: inherit; }
-input[type=password], select, textarea { width: 100%; padding: 8px; border: 1px solid var(--line);
-  border-radius: 6px; background: var(--bg); }
-textarea { min-height: 140px; font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
-.row { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
-.tabs { display: flex; gap: 4px; margin-bottom: 12px; }
-.tabs button { padding: 6px 14px; border: 1px solid var(--line); background: var(--bg);
-  border-radius: 6px; cursor: pointer; }
-.tabs button[aria-selected=true] { background: var(--accent); color: #fff; border-color: var(--accent); }
-.primary { padding: 9px 18px; background: var(--accent); color: #fff; border: 0; border-radius: 6px;
-  cursor: pointer; font-weight: 600; }
-.primary:disabled { opacity: .5; cursor: default; }
-.hint { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
-.status { padding: 10px 12px; border-radius: 6px; border: 1px solid var(--line); margin-bottom: 12px; }
-.status.ok { border-color: var(--ok); color: var(--ok); }
-.status.bad { border-color: var(--bad); color: var(--bad); }
-.status.warn { border-color: var(--warn); color: var(--warn); }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 12px; }
-.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.pane h3 { font-size: 13px; margin: 0 0 6px; color: var(--muted); text-transform: uppercase;
-  letter-spacing: .04em; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px;
+  box-shadow: var(--shadow); }
+.step { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 16px; }
+.step span { width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+  display: grid; place-items: center; font-size: 13px; font-weight: 700; flex: none; }
+input, textarea, button { font: inherit; color: inherit; }
+input[type=password], textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line);
+  border-radius: 10px; background: var(--soft); }
+input[type=password]:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.keyrow { display: flex; gap: 10px; align-items: center; }
+.keyrow input { flex: 1; }
+.ghost { padding: 8px 14px; border: 1px solid var(--line); background: var(--panel); border-radius: 10px;
+  cursor: pointer; white-space: nowrap; }
+.ghost:hover { border-color: var(--accent); color: var(--accent); }
+.hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+.drop { border: 2px dashed var(--line); border-radius: 12px; padding: 28px 16px; text-align: center;
+  cursor: pointer; background: var(--soft); transition: border-color .15s, background .15s; }
+.drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+.drop strong { display: block; font-size: 16px; }
+.drop svg { color: var(--accent); margin-bottom: 6px; }
+.picked { display: none; align-items: center; gap: 10px; justify-content: center; }
+.drop.has .picked { display: flex; }
+.drop.has .empty { display: none; }
+.picked b { word-break: break-all; }
+.or { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; margin: 14px 0; }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+textarea { min-height: 120px; resize: vertical; font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px; }
+.primary { padding: 11px 22px; background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 10px;
+  cursor: pointer; font-weight: 650; font-size: 15px; }
+.primary:hover { filter: brightness(1.08); }
+.primary:disabled { opacity: .55; cursor: default; filter: none; }
+kbd { font: 12px ui-monospace, Consolas, monospace; border: 1px solid var(--line); border-radius: 4px;
+  padding: 1px 5px; background: var(--soft); }
+.status { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 12px;
+  background: var(--soft); border: 1px solid var(--line); }
+.status .big { font-size: 17px; font-weight: 650; margin: 0; }
+.status p { margin: 2px 0 0; }
+.status.ok { background: var(--ok-soft); border-color: transparent; }
+.status.ok .big { color: var(--ok); }
+.status.warn { background: var(--warn-soft); border-color: transparent; }
+.status.warn .big { color: var(--warn); }
+.status.bad { background: var(--bad-soft); border-color: transparent; }
+.status.bad .big { color: var(--bad); }
+.spinner { width: 18px; height: 18px; border: 2px solid var(--line); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin .8s linear infinite; flex: none; margin-top: 3px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chip { background: var(--soft); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px;
+  font-size: 12px; font-weight: 600; }
+.chip i { font-style: normal; color: var(--muted); font-weight: 500; }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 18px 0 14px; overflow-x: auto; }
+.tabs button { padding: 8px 14px; border: 0; background: none; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; font-weight: 600; }
+.tabs button:hover { color: var(--ink); }
+.tabs button[aria-selected=true] { color: var(--accent); border-bottom-color: var(--accent); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.pane h3 { font-size: 12px; margin: 0 0 6px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: .05em; display: flex; justify-content: space-between; align-items: center; min-height: 30px; }
 .text { white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, Consolas, monospace;
-  font-size: 13px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+  font-size: 13px; background: var(--soft); border: 1px solid var(--line); border-radius: 10px;
   padding: 12px; max-height: 520px; overflow: auto; margin: 0; }
 mark { color: inherit; border-radius: 3px; padding: 0 1px; cursor: default; }
 mark.o { background: var(--hl-orig); }
@@ -59,109 +98,134 @@ mark.m { background: var(--hl-mask); }
 mark.block { background: var(--hl-block); }
 mark.unv { background: var(--hl-unv); }
 mark.focus { outline: 2px solid var(--focus); }
-.doc { width: 100%; height: 640px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px;
+  margin-right: 5px; vertical-align: -1px; background: var(--c); }
+.doc { width: 100%; height: 640px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
 img.doc { height: auto; max-height: 640px; object-fit: contain; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; }
 td.v { font-family: ui-monospace, Consolas, monospace; word-break: break-all; }
 .table-wrap { overflow-x: auto; }
+.alert { border: 1px solid var(--bad); background: var(--bad-soft); border-radius: 12px; padding: 14px 16px; margin-top: 14px; }
+.alert h3 { margin: 0 0 4px; font-size: 14px; color: var(--bad); }
+.alert p { margin: 0 0 10px; font-size: 13px; }
+.alert table { background: var(--panel); border-radius: 8px; }
 [hidden] { display: none !important; }
-@media (max-width: 800px) {
-  header, main { padding-left: 16px; padding-right: 16px; }
-  .row, .pair { grid-template-columns: 1fr; }
+@media (max-width: 760px) {
+  main { padding: 20px 16px 48px; }
+  .pair { grid-template-columns: 1fr; }
+  .keyrow { flex-direction: column; align-items: stretch; }
 }
 </style>
 </head>
 <body>
-<header>
-  <h1>Masking review</h1>
-  <p>Give text, a PDF, or an image and get the masked output. Masking runs on this gateway; nothing is sent to an AI.</p>
-</header>
 <main>
-  <section>
-    <div class="row">
-      <div>
-        <label for="key">Gateway API key</label>
-        <input id="key" type="password" autocomplete="off" placeholder="PRIVACY_API_KEY (kept only in this tab)">
+  <header>
+    <div class="logo" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/>
+        <path d="M9 12l2 2 4-4"/></svg>
+    </div>
+    <div>
+      <h1>Masking review</h1>
+      <p>Hide personal and confidential details before you share a document. Everything runs on this gateway.</p>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2 class="step"><span>1</span>Enter your gateway key</h2>
+    <div class="keyrow">
+      <input id="key" type="password" autocomplete="off" placeholder="PRIVACY_API_KEY" aria-label="Gateway API key">
+      <button class="ghost" id="reveal" type="button">Show</button>
+    </div>
+    <p class="hint">Kept only in this tab, never saved.</p>
+  </section>
+
+  <section class="card">
+    <h2 class="step"><span>2</span>Add a file or paste text</h2>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a file">
+      <div class="empty">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/>
+          <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+        <strong>Drop a file here, or click to browse</strong>
+        <span class="hint">PDF, image (ID card, scan, photo), DOCX, TXT or JSON, up to 5 MB</span>
       </div>
-      <div>
-        <label for="category">Category</label>
-        <select id="category">
-          <option>general</option><option>healthcare</option><option>invoices</option>
-          <option>agreements</option><option>guidelines</option>
-        </select>
-      </div>
+      <div class="picked"><span>📄</span><b id="fname"></b><button class="ghost" id="clearfile" type="button">Remove</button></div>
+    </div>
+    <input id="file" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.docx,.txt,.json" hidden>
+    <div class="or">or</div>
+    <textarea id="text" placeholder="Paste text or JSON here"></textarea>
+    <div class="actions">
+      <button class="primary" id="run">Mask it</button>
+      <span class="hint" style="margin:0"><kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
     </div>
   </section>
 
-  <section>
-    <h2>Input</h2>
-    <div class="tabs" role="tablist">
-      <button role="tab" data-tab="file" aria-selected="true">PDF / image / file</button>
-      <button role="tab" data-tab="text" aria-selected="false">Raw text</button>
-      <button role="tab" data-tab="json" aria-selected="false">Raw JSON</button>
-    </div>
-    <div data-panel="file">
-      <input id="file" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.docx,.txt,.json">
-      <p class="hint">PDF, PNG, JPEG, WEBP (ID cards, scans, photos), DOCX, TXT, JSON. Up to 5 MB.</p>
-    </div>
-    <div data-panel="text" hidden><textarea id="text" placeholder="Paste text"></textarea></div>
-    <div data-panel="json" hidden><textarea id="json" placeholder='{"patient_name": "..."}'></textarea></div>
-    <p><button class="primary" id="run">Run masking</button></p>
-  </section>
-
-  <section id="result" hidden>
-    <h2>Result</h2>
+  <section class="card" id="result" hidden>
     <div id="status" class="status"></div>
     <div class="chips" id="chips"></div>
     <p class="hint" id="ocr"></p>
-  </section>
 
-  <section id="docs" hidden>
-    <h2>Document: original vs masked copy</h2>
-    <p class="hint" id="docnote"></p>
-    <p><button class="primary" id="download">Download masked copy</button></p>
-    <div class="pair">
-      <div class="pane"><h3>Original</h3><div id="docOrig"></div></div>
-      <div class="pane"><h3>Masked copy</h3><div id="docMask"></div></div>
+    <div class="alert" id="findsec" hidden>
+      <h3>Still detected after masking</h3>
+      <p>The gateway re-checks the masked text before anything can be sent. These parts were flagged on that
+        second pass, so this input is refused. Some are real misses, some false alarms.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Masked text at that spot</th><th>Type</th><th>Reason</th><th>Found by</th><th>Confidence</th></tr></thead>
+        <tbody id="finds"></tbody>
+      </table></div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="texts" aria-selected="true">Masked text</button>
+      <button role="tab" data-tab="docs" aria-selected="false" id="docstab">Document</button>
+      <button role="tab" data-tab="spansec" aria-selected="false" id="spanstab">Every replacement</button>
+    </div>
+
+    <div data-panel="texts" id="texts">
+      <div class="legend">
+        <span style="--c:var(--hl-orig)">original value</span>
+        <span style="--c:var(--hl-mask)">placeholder</span>
+        <span style="--c:var(--hl-block)">blocked type</span>
+        <span style="--c:var(--hl-unv)">unreadable OCR word</span>
+        <span style="--c:transparent">Hover a highlight to find its pair.</span>
+      </div>
+      <div class="pair">
+        <div class="pane"><h3>What was read</h3><pre class="text" id="orig"></pre></div>
+        <div class="pane"><h3>Masked output <button class="ghost" id="copy" type="button">Copy</button></h3>
+          <pre class="text" id="masked"></pre></div>
+      </div>
+    </div>
+
+    <div data-panel="docs" id="docs" hidden>
+      <div class="actions" style="margin:0 0 10px">
+        <button class="primary" id="download">Download masked copy</button>
+        <span class="hint" id="docnote" style="margin:0"></span>
+      </div>
+      <div class="pair">
+        <div class="pane"><h3>Original</h3><div id="docOrig"></div></div>
+        <div class="pane"><h3>Masked copy</h3><div id="docMask"></div></div>
+      </div>
+    </div>
+
+    <div data-panel="spansec" id="spansec" hidden>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Type</th><th>Action</th><th>Original</th><th>Replaced with</th>
+          <th>Found by</th><th>Confidence</th></tr></thead>
+        <tbody id="spans"></tbody>
+      </table></div>
     </div>
   </section>
 
-  <section id="texts" hidden>
-    <h2>Text: what was read vs masked output</h2>
-    <p class="hint">Hover a highlight to find its pair. Purple = unreadable OCR word, red = blocked type.</p>
-    <div class="pair">
-      <div class="pane"><h3>Extracted original</h3><pre class="text" id="orig"></pre></div>
-      <div class="pane"><h3>Masked output <button id="copy" type="button">Copy</button></h3><pre class="text" id="masked"></pre></div>
-    </div>
-  </section>
-
-  <section id="spansec" hidden>
-    <h2>Every replacement</h2>
-    <div class="table-wrap"><table>
-      <thead><tr><th>#</th><th>Type</th><th>Action</th><th>Original</th><th>Replaced with</th>
-        <th>Found by</th><th>Confidence</th></tr></thead>
-      <tbody id="spans"></tbody>
-    </table></div>
-  </section>
-
-  <section id="findsec" hidden>
-    <h2>Still detected after masking</h2>
-    <p class="hint">The gateway re-checks the masked text before anything can be sent. These parts were
-      flagged on that second pass, so this input is refused. Some are real misses, some false alarms.</p>
-    <div class="table-wrap"><table>
-      <thead><tr><th>Masked text at that spot</th><th>Type</th><th>Reason</th><th>Found by</th><th>Confidence</th></tr></thead>
-      <tbody id="finds"></tbody>
-    </table></div>
-  </section>
-
-  <section id="llm" hidden>
-    <h2>Test with the AI (masked text only)</h2>
-    <label for="question">Question (optional, also masked)</label>
-    <textarea id="question" style="min-height:70px" placeholder="Summarise this document."></textarea>
-    <p><button class="primary" id="send">Send reviewed masked text</button></p>
+  <section class="card" id="llm" hidden>
+    <h2 class="step"><span>3</span>Test with the AI (masked text only)</h2>
+    <textarea id="question" style="min-height:70px" placeholder="Optional question, also masked. e.g. Summarise this document."></textarea>
+    <div class="actions"><button class="primary" id="send">Send reviewed masked text</button></div>
     <p class="hint">The gateway masks the input again and refuses if the result differs from what you reviewed.</p>
-    <div id="llmout" hidden>
+    <div id="llmout" hidden style="margin-top:14px">
       <div class="pair">
         <div class="pane"><h3>Messages the AI received</h3><pre class="text" id="sent"></pre></div>
         <div class="pane"><h3>AI reply (checked before display)</h3><pre class="text" id="reply"></pre></div>
@@ -172,15 +236,40 @@ td.v { font-family: ui-monospace, Consolas, monospace; word-break: break-all; }
 <script>
 "use strict";
 const $ = (id) => document.getElementById(id);
-let tab = "file", last = null, lastInput = null, urls = [], maskedBlob = null;
+// The category is left to the server default ("general"), which masks every detected type.
+let picked = null, last = null, lastInput = null, urls = [], maskedBlob = null;
 // Mask-only by default: the AI test section appears only on /review?send=1.
 const SEND_ENABLED = new URLSearchParams(location.search).get("send") === "1";
 
-document.querySelectorAll("[role=tab]").forEach((b) => b.addEventListener("click", () => {
-  tab = b.dataset.tab;
-  document.querySelectorAll("[role=tab]").forEach((x) => x.setAttribute("aria-selected", x === b));
-  document.querySelectorAll("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== tab; });
-}));
+$("reveal").addEventListener("click", () => {
+  const hidden = $("key").type === "password";
+  $("key").type = hidden ? "text" : "password";
+  $("reveal").textContent = hidden ? "Hide" : "Show";
+});
+
+function pick(file) {
+  picked = file || null;
+  $("drop").classList.toggle("has", !!picked);
+  $("fname").textContent = picked ? picked.name + " · " + Math.max(1, Math.round(picked.size / 1024)) + " KB" : "";
+  if (!picked) $("file").value = "";
+}
+const drop = $("drop");
+drop.addEventListener("click", (e) => { if (e.target.id !== "clearfile") $("file").click(); });
+drop.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("file").click(); } });
+drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+drop.addEventListener("drop", (e) => {
+  e.preventDefault(); drop.classList.remove("over");
+  if (e.dataTransfer.files.length) pick(e.dataTransfer.files[0]);
+});
+$("file").addEventListener("change", () => pick($("file").files[0]));
+$("clearfile").addEventListener("click", (e) => { e.stopPropagation(); pick(null); });
+
+function selectTab(name) {
+  document.querySelectorAll("[role=tab]").forEach((x) => x.setAttribute("aria-selected", x.dataset.tab === name));
+  document.querySelectorAll("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== name; });
+}
+document.querySelectorAll("[role=tab]").forEach((b) => b.addEventListener("click", () => selectTab(b.dataset.tab)));
 
 const MESSAGES = {
   unauthorized: "Wrong or missing API key.",
@@ -205,94 +294,112 @@ async function call(path, init) {
   return body;
 }
 
-function setStatus(kind, message) {
+function setStatus(kind, title, detail) {
   $("result").hidden = false;
-  $("status").className = "status " + kind;
-  $("status").textContent = message;
+  const box = $("status");
+  box.className = "status " + kind;
+  box.textContent = "";
+  if (kind === "busy") { const s = document.createElement("div"); s.className = "spinner"; box.append(s); }
+  const wrap = document.createElement("div");
+  const big = document.createElement("p"); big.className = "big"; big.textContent = title; wrap.append(big);
+  if (detail) { const p = document.createElement("p"); p.textContent = detail; wrap.append(p); }
+  box.append(wrap);
+}
+
+function showOnly(busy) {
+  const hide = busy || !last;
+  ["chips", "ocr", "findsec", "texts", "docs", "spansec"].forEach((id) => { if (hide) $(id).hidden = true; });
+  document.querySelector("#result .tabs").hidden = hide;
 }
 
 function currentInput() {
-  const category = $("category").value;
-  if (tab === "file") {
-    const file = $("file").files[0];
-    if (!file) throw new Error("Choose a file first.");
-    return { kind: "file", file, category };
+  if (!$("key").value.trim()) throw new Error("Enter the gateway API key first (step 1).");
+  if (picked) return { kind: "file", file: picked };
+  const raw = $("text").value;
+  if (!raw.trim()) throw new Error("Add a file or paste some text first.");
+  // Paste that parses as a JSON object or array is masked as structured data.
+  if (/^\s*[{[]/.test(raw)) {
+    try {
+      const data = JSON.parse(raw);
+      if (data && typeof data === "object") return { kind: "json", data };
+    } catch (e) { /* treat as plain text */ }
   }
-  if (tab === "json") {
-    let data;
-    try { data = JSON.parse($("json").value); } catch (e) { throw new Error("That is not valid JSON."); }
-    return { kind: "json", data, category };
-  }
-  if (!$("text").value.trim()) throw new Error("Paste some text first.");
-  return { kind: "text", text: $("text").value, category };
+  return { kind: "text", text: raw };
 }
 
-$("run").addEventListener("click", async () => {
+async function run() {
   let input;
   try { input = currentInput(); } catch (e) { return setStatus("bad", e.message); }
   $("run").disabled = true;
-  setStatus("", "Masking locally…");
-  ["docs", "texts", "spansec", "findsec", "llm"].forEach((id) => { $(id).hidden = true; });
-  $("llmout").hidden = true;
+  last = null;
+  showOnly(true);
+  $("llm").hidden = true; $("llmout").hidden = true;
+  setStatus("busy", "Masking locally…", "This can take a few seconds for scans and images.");
+  $("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
   try {
     let result;
     if (input.kind === "file") {
       const form = new FormData();
       form.append("file", input.file, input.file.name);
-      form.append("category", input.category);
       result = await call("/preview/document", { method: "POST", body: form });
     } else {
-      const body = { category: input.category };
-      body[input.kind === "json" ? "data" : "text"] = input.kind === "json" ? input.data : input.text;
+      const body = input.kind === "json" ? { data: input.data } : { text: input.text };
       result = await call("/preview/text", { method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body) });
     }
     last = result; lastInput = input;
     render(result, input);
   } catch (e) {
-    setStatus("bad", e.message);
+    setStatus("bad", "Could not mask this input", e.message);
   } finally {
     $("run").disabled = false;
   }
-});
+}
+$("run").addEventListener("click", run);
+document.addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !$("run").disabled) run(); });
 
 function render(r, input) {
   const s = r.summary;
   const findings = r.validation.findings;
   if (findings.length) {
-    setStatus("bad", "The safety check still detected " + findings.length + " value(s) after masking (listed under " +
-      "\"Still detected after masking\"). Do not treat this output as safe to share.");
+    setStatus("bad", "Not safe to share", "The safety check still detected " + findings.length +
+      " value(s) after masking. See the list below.");
   } else if (!r.sendable) {
-    setStatus("bad", "Blocked type found (" + s.blocked_types.join(", ") + "). This input would be refused; review only.");
+    setStatus("bad", "Blocked content found", "This contains " + s.blocked_types.join(", ") +
+      ", which is never sent. You can review it here only.");
   } else if (r.masked_document && r.masked_document.unlocated_spans) {
-    setStatus("warn", s.masked_spans + " values masked in the text. " + r.masked_document.unlocated_spans +
+    setStatus("warn", s.masked_spans + " values masked", r.masked_document.unlocated_spans +
       " could not be located on the page, so the masked copy shows them uncovered (the text is still masked).");
   } else {
-    setStatus("ok", s.masked_spans + " values masked. Detector: " + r.detector + ". Review the output below.");
+    setStatus("ok", "✓ " + s.masked_spans + " values masked", "Check the masked output below, then copy or download it.");
   }
-  const chips = $("chips"); chips.textContent = "";
+  showOnly(false);
+  const chips = $("chips"); chips.textContent = ""; chips.hidden = false;
   Object.entries(s.by_type).forEach(([type, n]) => {
-    const c = document.createElement("span"); c.className = "chip"; c.textContent = type + " × " + n; chips.append(c);
+    const c = document.createElement("span"); c.className = "chip"; c.textContent = type + " ";
+    const k = document.createElement("i"); k.textContent = "× " + n; c.append(k); chips.append(c);
   });
+  $("ocr").hidden = !r.ocr;
   $("ocr").textContent = r.ocr ? "OCR: " + r.ocr.engine + " (" + r.ocr.languages + "), " + r.ocr.words +
     " words read, " + r.ocr.unverified_words + " unreadable or non-English words masked as UNVERIFIED_TEXT" +
     " (confidence below " + r.ocr.min_confidence + " or not Latin script)." : "";
 
   urls.forEach(URL.revokeObjectURL); urls = [];
-  if (r.masked_document && input.kind === "file") {
-    $("docs").hidden = false;
+  const hasDoc = !!(r.masked_document && input.kind === "file");
+  $("docstab").hidden = !hasDoc;
+  if (hasDoc) {
     $("docnote").textContent = r.masked_document.note;
     show($("docOrig"), input.file, input.file.type || "");
     const bytes = Uint8Array.from(atob(r.masked_document.base64), (c) => c.charCodeAt(0));
     maskedBlob = new Blob([bytes], { type: r.masked_document.media_type });
     show($("docMask"), maskedBlob, r.masked_document.media_type);
   }
+  selectTab(hasDoc ? "docs" : "texts");
 
-  $("texts").hidden = false;
   paint($("orig"), r.original_text, r.spans, "start", "end", "o");
   paint($("masked"), r.sanitized_text, r.spans, "masked_start", "masked_end", "m");
 
-  $("spansec").hidden = false;
+  $("spanstab").textContent = "Every replacement (" + r.spans.length + ")";
   const body = $("spans"); body.textContent = "";
   r.spans.forEach((x, i) => {
     const tr = document.createElement("tr");
@@ -316,7 +423,7 @@ function render(r, input) {
 
 $("copy").addEventListener("click", async () => {
   if (!last) return;
-  try { await navigator.clipboard.writeText(last.sanitized_text); $("copy").textContent = "Copied"; }
+  try { await navigator.clipboard.writeText(last.sanitized_text); $("copy").textContent = "Copied ✓"; }
   catch (e) { $("copy").textContent = "Copy failed"; }
   setTimeout(() => { $("copy").textContent = "Copy"; }, 1500);
 });
@@ -374,7 +481,6 @@ $("send").addEventListener("click", async () => {
     if (lastInput.kind === "file") {
       const form = new FormData();
       form.append("file", lastInput.file, lastInput.file.name);
-      form.append("category", lastInput.category);
       form.append("approved_preview_sha256", last.preview_sha256);
       if (question) form.append("question", question);
       reply = await call("/llm/document", { method: "POST", body: form });
@@ -382,13 +488,13 @@ $("send").addEventListener("click", async () => {
       const messages = [{ role: "user", content: last.original_text }];
       if (question) messages.push({ role: "user", content: question });
       reply = await call("/llm/chat", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category: lastInput.category, messages, approved_preview_sha256: last.preview_sha256 }) });
+        body: JSON.stringify({ messages, approved_preview_sha256: last.preview_sha256 }) });
     }
     $("llmout").hidden = false;
     $("sent").textContent = reply.sent_messages.map((m) => "[" + m.role + "]\n" + m.content).join("\n\n");
     $("reply").textContent = reply.message.content;
   } catch (e) {
-    setStatus("bad", e.message);
+    setStatus("bad", "Not sent", e.message);
   } finally {
     $("send").disabled = false;
   }

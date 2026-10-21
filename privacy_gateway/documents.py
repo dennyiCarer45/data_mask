@@ -6,8 +6,9 @@ import zipfile
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
+from . import layout
 from .errors import PrivacyError
-from .ocr import layout
+from .ocr import layout as ocr_layout
 
 IMAGE_FORMATS = {".png": "PNG", ".jpg": "JPEG", ".jpeg": "JPEG", ".webp": "WEBP"}
 MAX_IMAGE_PIXELS = 40_000_000
@@ -78,10 +79,9 @@ class Extracted:
     content: bytes = b""
     # OCR words that must be masked: low confidence or a script the detectors do not cover.
     unverified: list[tuple[int, int]] = field(default_factory=list)
-    # OCR word boxes as (start, end, page, (x0, y0, x1, y1)); page is None for image files.
+    # Printed positions as (start, end, page, (x0, y0, x1, y1)): one per PDF text-layer
+    # character and per OCR word. page is None for image files.
     boxes: list = field(default_factory=list)
-    # PDF text-layer ranges as (start, end, page).
-    layers: list = field(default_factory=list)
     ocr_words: int = 0
     image_format: str = ""
 
@@ -130,10 +130,16 @@ class DocumentProcessor:
         if self.ocr is None:
             raise PrivacyError("ocr_unavailable", 503)
         words = self.ocr.words(open_image(content, image_format))
-        region = layout(words, self.ocr)
+        region = ocr_layout(words, self.ocr)
         boxes = [(start, end, None, box) for start, end, box in region.words]
         return Extracted(
-            region.text, "image", content, region.unverified, boxes, [], len(words), image_format
+            region.text,
+            "image",
+            content,
+            unverified=region.unverified,
+            boxes=boxes,
+            ocr_words=len(words),
+            image_format=image_format,
         )
 
     def _pdf(self, content: bytes) -> Extracted:
@@ -147,38 +153,49 @@ class DocumentProcessor:
                 raise PrivacyError("unsupported_pdf")
             if doc.embfile_count() and not self._only_content_credentials(doc):
                 raise PrivacyError("unsupported_pdf")
-            pages, offset = [], 0
-            for number, page in enumerate(doc):
+            pages, images = [], []
+            for page in doc:
+                # Link annotations are not listed here and are allowed; they hold no text.
                 if list(page.annots() or []) or list(page.widgets() or []):
                     raise PrivacyError("partial_extraction_risk")
                 # Includes inline images, which page.get_images() does not list.
-                images = [pymupdf.Rect(i["bbox"]) & page.rect for i in page.get_image_info()]
+                images.append([pymupdf.Rect(i["bbox"]) & page.rect for i in page.get_image_info()])
                 # Without OCR an image could hold identifiers that are never extracted.
-                if images and self.ocr is None:
+                if images[-1] and self.ocr is None:
                     raise PrivacyError("partial_extraction_risk")
-                layer = page.get_text("text", sort=True)
-                parts = []
-                if layer.strip():
-                    parts.append(layer)
-                    result.layers.append((offset, offset + len(layer), number))
-                for rect in images:
+                pages.append(layout.page_units(page, pymupdf))
+            layout.mark_page_furniture(pages, [page.rect.height for page in doc])
+            body = layout.body_size(pages)
+            builder = layout.TextBuilder()
+            for number, page in enumerate(doc):
+                if len(doc) > 1:
+                    builder.newline()
+                    builder.add(f"--- page {number + 1} ---\n")
+                start, written = builder.size, len(builder.boxes)
+                layout.write_page(builder, pages[number], number, body)
+                # Reordering must not drop or repeat printed text.
+                if len(builder.boxes) - written != layout.visible_chars(pages[number]):
+                    raise PrivacyError("partial_extraction_risk")
+                for rect in images[number]:
                     if rect.is_empty or rect.width < 2 or rect.height < 2:
                         continue
                     region = self._ocr_region(page, rect)
                     if not region.text:
                         continue
-                    base = offset + sum(map(len, parts)) + len(parts)
-                    parts.append(region.text)
-                    result.boxes.extend((base + s, base + e, number, b) for s, e, b in region.words)
+                    builder.newline()
+                    base = builder.size
+                    builder.add(region.text + "\n")
+                    builder.boxes.extend(
+                        (base + s, base + e, number, b) for s, e, b in region.words
+                    )
                     result.unverified.extend((base + s, base + e) for s, e in region.unverified)
                     result.ocr_words += len(region.words)
                 # A blank page, or an image without readable text, may be an unread scan.
-                text = check_text("\n".join(parts), self.max_chars)
-                pages.append(text)
-                offset += len(text) + 1
-                if offset > self.max_chars:
+                check_text(builder.text()[start:], self.max_chars)
+                if builder.size > self.max_chars:
                     raise PrivacyError("text_too_large", 413)
-            result.text = "\n".join(pages)
+            result.text = builder.text().rstrip("\n")
+            result.boxes = builder.boxes
             return result
 
     def _ocr_region(self, page, rect):
@@ -208,7 +225,7 @@ class DocumentProcessor:
             if any(text == word.text.casefold() and center in r for r, text in layer_words):
                 continue
             kept.append(replace(word, box=box))
-        return layout(kept, self.ocr)
+        return ocr_layout(kept, self.ocr)
 
     @staticmethod
     def _only_content_credentials(doc) -> bool:
@@ -253,7 +270,7 @@ class DocumentProcessor:
                 raise PrivacyError("partial_extraction_risk")
             # Verify package is a Word document through python-docx, then walk all supported parts.
             Document(io.BytesIO(content))
-            chunks = []
+            parts = {}
             for info in infos:
                 if not info.filename.startswith("word/") or not info.filename.endswith(".xml"):
                     continue
@@ -282,11 +299,11 @@ class DocumentProcessor:
                 supported = ("document.xml", "footnotes.xml", "endnotes.xml", "comments.xml")
                 part = Path(info.filename).name
                 if part in supported or part.startswith(("header", "footer")):
-                    ns = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
-                    for paragraph in root.iter(ns + "p"):
-                        # Includes nested tables and headers/footers in their package order.
-                        chunks.append("".join(n.text or "" for n in paragraph.iter(ns + "t")))
-            return "\n".join(chunks)
+                    parts[info.filename] = root
+                elif info.filename in ("word/styles.xml", "word/numbering.xml"):
+                    parts[info.filename] = root
+            # Headings, list numbers, line breaks, tabs, and table rows are kept as text.
+            return layout.docx_text(parts)
 
 
 def open_image(content: bytes, image_format: str):

@@ -25,7 +25,7 @@ from .documents import (
 from .errors import PrivacyError
 from .ocr import TesseractOCR
 from .pipeline import Pipeline
-from .policy import Policies
+from .policy import Policies, selection
 from .redaction import render_masked
 from .schemas import Category, ChatRequest, TextRequest
 from .transport import ProxyTransport
@@ -42,6 +42,16 @@ REVIEW_CSP = (
 
 def digest(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def form_types(raw: str | None) -> frozenset[str] | None:
+    """A form's comma-separated mask field ("PERSON,EMAIL") as a caller selection. An empty
+    field (a curl config with no MASK set) keeps the server policy."""
+    return None if not raw or not raw.strip() else selection([x.strip() for x in raw.split(",")])
+
+
+def echo(only):
+    return None if only is None else sorted(only)
 
 
 class PrivateBoundary:
@@ -190,26 +200,27 @@ def create_app(settings=None, engine=None, transport=None, ocr=None):
             "detector": request.app.state.pipeline.engine.mode,
         }
 
-    def sanitized_response(extracted, category, pipeline):
+    def sanitized_response(extracted, category, pipeline, only=None):
         sanitized, counts, context = pipeline.sanitize(
-            [extracted.text], category, [extracted.unverified]
+            [extracted.text], category, [extracted.unverified], only=only
         )
         try:
             return {
                 "sanitized_text": sanitized[0],
                 "masked_spans": counts[0],
                 "category": category,
+                "mask": echo(only),
                 "detector": pipeline.engine.mode,
             }
         finally:
             context.clear()
 
-    def preview_response(extracted, category, app_state):
+    def preview_response(extracted, category, app_state, only=None):
         """Local review: original and masked text, every replacement, and a masked copy."""
         pipeline = app_state.pipeline
         recorded = []
         sanitized, counts, context = pipeline.sanitize(
-            [extracted.text], category, [extracted.unverified], recorded
+            [extracted.text], category, [extracted.unverified], recorded, only
         )
         try:
             spans = recorded[0]
@@ -221,6 +232,7 @@ def create_app(settings=None, engine=None, transport=None, ocr=None):
             return {
                 "input_type": extracted.kind,
                 "category": category,
+                "mask": echo(only),
                 "detector": pipeline.engine.mode,
                 "original_text": extracted.text,
                 "sanitized_text": sanitized[0],
@@ -268,34 +280,48 @@ def create_app(settings=None, engine=None, transport=None, ocr=None):
     @app.post("/mask/text")
     def mask_text(body: TextRequest, request: Request):
         extracted = Extracted(input_text(body), "text")
-        return sanitized_response(extracted, body.category, request.app.state.pipeline)
+        return sanitized_response(
+            extracted, body.category, request.app.state.pipeline, selection(body.mask)
+        )
 
     @app.post("/mask/document")
     async def mask_document(
-        request: Request, file: UploadFile = File(...), category: Category = Form("general")
+        request: Request,
+        file: UploadFile = File(...),
+        category: Category = Form("general"),
+        mask: str | None = Form(None, max_length=512),
     ):
+        only = form_types(mask)
         extracted = await read_upload(request, file)
         return await run_in_threadpool(
-            sanitized_response, extracted, category, request.app.state.pipeline
+            sanitized_response, extracted, category, request.app.state.pipeline, only
         )
 
     @app.post("/preview/text")
     def preview_text(body: TextRequest, request: Request):
         kind = "text" if body.text is not None else "json"
         extracted = Extracted(input_text(body), kind)
-        return preview_response(extracted, body.category, request.app.state)
+        return preview_response(extracted, body.category, request.app.state, selection(body.mask))
 
     @app.post("/preview/document")
     async def preview_document(
-        request: Request, file: UploadFile = File(...), category: Category = Form("general")
+        request: Request,
+        file: UploadFile = File(...),
+        category: Category = Form("general"),
+        mask: str | None = Form(None, max_length=512),
     ):
+        only = form_types(mask)
         extracted = await read_upload(request, file)
-        return await run_in_threadpool(preview_response, extracted, category, request.app.state)
+        return await run_in_threadpool(
+            preview_response, extracted, category, request.app.state, only
+        )
 
-    async def send(request, roles, texts, category, max_tokens, approved, unverified=None):
+    async def send(
+        request, roles, texts, category, max_tokens, approved, unverified=None, only=None
+    ):
         pipeline = request.app.state.pipeline
         sanitized, counts, context = await run_in_threadpool(
-            pipeline.sanitize, texts, category, unverified
+            pipeline.sanitize, texts, category, unverified, None, only
         )
         try:
             # Send only what was reviewed: masking is recomputed here, never taken from the client.
@@ -312,6 +338,7 @@ def create_app(settings=None, engine=None, transport=None, ocr=None):
                 "message": {"role": "assistant", "content": output},
                 "masked_spans": sum(counts),
                 "category": category,
+                "mask": echo(only),
                 "sent_messages": messages,
             }
         finally:
@@ -326,6 +353,7 @@ def create_app(settings=None, engine=None, transport=None, ocr=None):
             body.category,
             body.max_tokens,
             body.approved_preview_sha256,
+            only=selection(body.mask),
         )
 
     @app.post("/llm/document")
@@ -336,7 +364,9 @@ def create_app(settings=None, engine=None, transport=None, ocr=None):
         question: str | None = Form(None, min_length=1, max_length=32000),
         max_tokens: int = Form(512, ge=1, le=2048),
         approved_preview_sha256: str | None = Form(None, pattern=r"^[0-9a-f]{64}$"),
+        mask: str | None = Form(None, max_length=512),
     ):
+        only = form_types(mask)
         extracted = await read_upload(request, file)
         texts, unverified = [extracted.text], [extracted.unverified]
         if question is not None:
@@ -350,6 +380,7 @@ def create_app(settings=None, engine=None, transport=None, ocr=None):
             max_tokens,
             approved_preview_sha256,
             unverified,
+            only,
         )
 
     return app

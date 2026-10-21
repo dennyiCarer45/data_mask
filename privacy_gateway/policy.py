@@ -66,7 +66,25 @@ class Policies:
                     if not token or not token.startswith("[") or not token.endswith("]"):
                         raise ValueError("generalization_token_required")
 
-    def action(self, category: str, entity_type: str) -> Action:
+    def action(self, category: str, entity_type: str, only=None) -> Action:
+        """only: a caller's selection of types to protect; every other type is allowed. Blocked
+        types and unverified OCR text keep the configured action whatever the caller selects."""
         if category not in self.config.categories or entity_type not in TYPES:
             raise PrivacyError("invalid_policy")
-        return self.config.categories[category].get(entity_type, self.config.defaults[entity_type])
+        action = self.config.categories[category].get(
+            entity_type, self.config.defaults[entity_type]
+        )
+        if only is None or action == "block" or entity_type == UNVERIFIED:
+            return action
+        if entity_type not in only:
+            return "allow"
+        return "mask" if action == "allow" else action
+
+
+def selection(types) -> frozenset[str] | None:
+    """A caller's list of types to mask; None keeps the server policy unchanged."""
+    if types is None:
+        return None
+    if not types or not set(types) <= TYPES:
+        raise PrivacyError("invalid_mask_types", 422)
+    return frozenset(types)

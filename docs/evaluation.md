@@ -253,3 +253,39 @@ all four cards, all are sendable, and the earlier samples are unchanged except t
 Aadhaar photo no longer masks the word `Aadhaar`. Kept on purpose: gender, validity date, vehicle
 class. Still over-masked: `Government of India` and similar issuers (policy question above), and
 an OCR fragment `Perman`. 138 tests passed. One rendering per card; not a rate.
+
+### Layout-aware extraction (2026-10-19)
+
+PDF and DOCX text now carries reading order and structure (see `docs/decisions.md`). Measured in
+the Docker image (`local-privacy-gateway:dev`: Python 3.13, PyMuPDF 1.28.2, python-docx 1.2.0,
+GLiNER 0.2.29, Tesseract 5.5.0) with `--network none`, comparing the previous commit (`43f6516`)
+and the new code on the same inputs through extraction, masking, input validation, and the review
+copy: the 12 repository samples (PDFs, scanned PDF, DOCX, ID-card photos) plus a synthetic
+two-page two-column paper with a bordered table and a synthetic structured DOCX.
+
+| Check (GLiNER + rules) | Before | After |
+|---|---:|---:|
+| Inputs whose sendable/refused outcome changed | — | 0 of 14 |
+| Values masked before that now reach the text unmasked | — | 0 (one diff-script hit was the document's own `<PERSON_001>` example) |
+| Review-copy spans not covered | 0 | 0 |
+
+What changed in the text: the two-column paper is read column by column instead of spliced line by
+line; bordered tables (paper results, legal invoice fees) are `| cell |` rows; the legal invoice
+header blocks are read one after the other; DOCX tables are rows, headings and list numbers are
+kept, and line breaks no longer glue words (`Follow-up withDr.`). On the agreement, two earlier
+false alarms disappeared (`Initial milestone` as AMOUNT, `software testing` as internal
+information) and the payment reference `DEMO-ACCT-7421` is now masked (as SECRET, so it adds a
+block; the agreement was already refused by policy). New over-masking: `High-Cost` and one job
+title in the legal invoice, `Baseline` in the paper's table. One regression was found and fixed
+before release: the guideline DOCX was blocked on `unpublished operating metrics` (0.359), now a
+generic-word filter entry; and a date of birth in a DOCX table row was missed until the
+date-of-birth rule accepted `|`.
+
+`evaluate.py` (both modes) and `evaluate_documents.py` (both modes) returned the same accuracy
+figures as the committed snapshots; only latency differed, and that run shared the CPU with other
+containers, so the snapshots were not replaced. Full suite: **153 passed** with
+`RUN_MODEL_TESTS=1 RUN_PROXY_TESTS=1`, 0 skipped; ruff check and format clean.
+
+Limits: one synthetic paper, rendered by PyMuPDF with one font and no bold headings; no real
+journal PDFs, three-column pages, borderless tables, or text wrapped around figures. Long papers
+still exceed the 32,000-character limit.

@@ -14,10 +14,11 @@ class Pipeline:
         self.input_validator = InputPrivacyValidator(engine, policies)
         self.output_validator = OutputPrivacyValidator(engine, policies)
 
-    def sanitize(self, texts: list[str], category: str, unverified=None, spans=None):
+    def sanitize(self, texts: list[str], category: str, unverified=None, spans=None, only=None):
         """unverified: per text, OCR word ranges that must be masked whatever detection finds.
-        spans: a list to receive one list of replacements per text (local review only)."""
-        context = MaskContext()
+        spans: a list to receive one list of replacements per text (local review only).
+        only: the caller's selection of types to mask (policy.selection), or None."""
+        context = MaskContext(only=only)
         try:
             if sum(map(len, texts)) > self.max_chars:
                 raise PrivacyError("text_too_large", 413)
@@ -83,7 +84,7 @@ class Pipeline:
                 piece = text[e.start : e.end]
                 if RESERVED.search(piece) or not piece.strip():
                     continue
-                if self.policies.action(category, e.entity_type) == "allow":
+                if self.policies.action(category, e.entity_type, context.only) == "allow":
                     continue
                 key = (piece.casefold(), e.entity_type)
                 values[key] = max(e.confidence, values.get(key, 0.0))

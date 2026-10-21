@@ -1,0 +1,31 @@
+# curl config: preview what a gateway masks in a document, with the originals. Local review only.
+# Needs curl 8.3+ (variables) and the server's cert.pem (not secret) in the current folder.
+#
+#   Windows PowerShell:  $env:PRIVACY_API_KEY="..."; $env:FILE="invoice.pdf"; $env:CATEGORY="invoices"
+#                        curl.exe -K preview.curl -o preview.json
+#   Linux / macOS / Git Bash:
+#                        PRIVACY_API_KEY=... FILE=invoice.pdf CATEGORY=invoices curl -K preview.curl -o preview.json
+#
+# Change the address below to your server. Categories: general, healthcare, invoices,
+# agreements, guidelines. The reply is JSON: "original_text", "sanitized_text", and "spans"
+# (each masked value: start/end in original_text, entity_type, action mask/generalize/block,
+# token). Text outside the spans is kept as is. The reply CONTAINS ORIGINALS: do not share it.
+
+variable = %PRIVACY_API_KEY
+variable = %FILE
+variable = %CATEGORY=general
+# Optional: only these types are masked, e.g. MASK=PERSON,PHONE. Empty uses the server policy.
+variable = %MASK=
+
+expand-url = "https://192.168.1.17:8443/preview/document"
+expand-header = "Authorization: Bearer {{PRIVACY_API_KEY}}"
+expand-form = "category={{CATEGORY}}"
+expand-form = "mask={{MASK}}"
+expand-form = "file=@{{FILE}}"
+
+cacert = "cert.pem"
+# Windows only needs this (a self-signed certificate has no revocation list); others ignore it.
+ssl-no-revoke
+silent
+show-error
+fail-with-body

@@ -23,7 +23,8 @@ containers does not securely erase all copies, swap, crash dumps, or provider-in
 
 Authentication before parsing, request/file/text limits, duplicate-key and nonfinite-JSON rejection,
 UTF-8 validation, restrictive document feature support, model-required default startup, validated
-policy actions, complete input validation before transport, signed proxy approval, restrictive
+policy actions (a caller's `mask` selection can narrow protection to the listed types but never
+unblock a blocked type or allow unverified OCR text), complete input validation before transport, signed proxy approval, restrictive
 request fields, no streaming, and buffered output validation. All application errors are static codes.
 Only local provisioning downloads public weights; inference is offline. No remote detection APIs.
 
@@ -55,14 +56,22 @@ only within one proxy process lifetime. Do not scale workers without shared repl
   validation. Different spellings/aliases are not resolved to one identity, except that the first
   word of a company name ending in a legal suffix (LLC, Ltd, …) is masked wherever it appears.
 - PDF completeness checks are conservative heuristics. Images are read by OCR (or rejected when OCR
-  is unavailable); forms, attachments, and blank pages are rejected (except a C2PA "Content Credentials" manifest, which is ignored and never sent), but vector-drawn glyphs, obfuscated fonts, hidden layers, and reading order cannot
-  be comprehensively verified. DOCX feature rejection is similarly bounded, not a formal proof.
+  is unavailable); forms, attachments, and blank pages are rejected (except a C2PA "Content Credentials" manifest, which is ignored and never sent), but vector-drawn glyphs, obfuscated fonts, and hidden layers cannot
+  be comprehensively verified. DOCX feature rejection is similarly bounded, not a formal proof;
+  DOCX extraction fails if any paragraph of a read part was not written into the text.
+- Reading order and structure (columns, headings, tables, page labels) are reconstructed by
+  heuristics in `layout.py`. A wrong order does not drop text, but it can put a value beside the
+  wrong label, which changes what label rules and the model see. Markup added by layout extraction
+  is not document text and has no page position.
 - OCR (Tesseract 5.5.0, English + Hindi) reads images and PDF image regions. OCR can misread a value
   with high confidence; a misread name or number then depends on detection like any other text.
   Words below confidence 60 and every non-Latin word are masked as `UNVERIFIED_TEXT` without being
   checked. Vector-drawn text outside images is still not cross-checked against a page render.
 - The masked review copy covers masked words only. Photos, QR codes (an Aadhaar QR encodes the card
   details), signatures, and other graphics remain; it is a review aid, not a redacted document.
+  PDF copies are covered at each masked character's own position and then read back; a masked
+  value still readable in the copy is reported as uncovered (`unlocated_spans`), but the copy is
+  still returned to the local caller.
 - Unlabeled names on ID cards need GLiNER; rules mode leaks them (see evaluation).
 - Handwriting, legacy DOC, arbitrary binary files, multilingual detection, archive sandboxing,
   and semantic verification of contractual terms are not implemented.
